@@ -10,9 +10,14 @@ const Header = () => {
   const navigation = [
     { name: 'Inicio', path: '/' },
     { name: 'Servicios', path: '/servicios' },
+    { name: 'Experiencia', path: '/experiencia' },
+    { name: 'Seguridad', path: '/seguridad' },
+    { name: 'Políticas', path: '/politicas' },
+    { name: 'Filosofía', path: '/filosofia' },
     { name: 'Galería', path: '/galeria' },
     { name: 'Conócenos', path: '/conocenos' },
-    { name: 'Contacto', path: '/contacto' }
+    { name: 'Contacto', path: '/contacto' },
+    { name: 'FAQ', path: '/faq' }
   ];
   
   const isActive = (path) => location.pathname === path;

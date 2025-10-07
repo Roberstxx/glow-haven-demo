@@ -1,0 +1,96 @@
+.experience-page {
+  background: var(--clr-bg);
+}
+
+.amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-12);
+}
+
+.amenity-tile {
+  background: var(--clr-surface);
+  border-radius: calc(var(--radius) * 1.1);
+  padding: var(--space-6);
+  text-align: left;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: transform var(--speed) var(--easing), box-shadow var(--speed) var(--easing);
+}
+
+.amenity-tile:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.amenity-icon {
+  font-size: 2.4rem;
+}
+
+.amenity-tile h2 {
+  font-size: var(--fs-xl);
+  color: var(--clr-text);
+}
+
+.amenity-tile p {
+  color: var(--clr-gray-600);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+}
+
+.premium-highlight {
+  margin-top: var(--space-16);
+  background: linear-gradient(120deg, rgba(245, 227, 195, 0.45), rgba(247, 71, 128, 0.15));
+  border-radius: calc(var(--radius) * 1.5);
+  padding: var(--space-10);
+  position: relative;
+  overflow: hidden;
+}
+
+.premium-highlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.65), transparent 55%);
+  pointer-events: none;
+}
+
+.premium-highlight-content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.premium-badge {
+  align-self: flex-start;
+  background: var(--clr-primary);
+  color: white;
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-full);
+  letter-spacing: 0.5px;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+}
+
+.premium-highlight h2 {
+  font-size: var(--fs-3xl);
+  font-family: 'Playfair Display', serif;
+}
+
+.premium-highlight p {
+  font-size: var(--fs-base);
+  color: var(--clr-gray-700);
+  line-height: var(--lh-relaxed);
+}
+
+@media (max-width: 767px) {
+  .premium-highlight {
+    padding: var(--space-8);
+  }
+}

@@ -1,0 +1,112 @@
+.contact-page {
+  background: var(--clr-bg);
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  justify-content: center;
+  margin-top: var(--space-10);
+}
+
+.contact-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-full);
+  background: var(--clr-surface);
+  color: var(--clr-text);
+  border: 1px solid rgba(247, 71, 128, 0.2);
+  box-shadow: var(--shadow);
+  font-weight: var(--fw-medium);
+  transition: transform var(--speed) var(--easing), box-shadow var(--speed) var(--easing);
+}
+
+.contact-action:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-8);
+  margin-top: var(--space-12);
+}
+
+.contact-card {
+  background: var(--clr-surface);
+  border-radius: calc(var(--radius) * 1.1);
+  padding: var(--space-6);
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: var(--space-5);
+}
+
+.contact-card h2 {
+  font-size: var(--fs-xl);
+  font-family: 'Playfair Display', serif;
+}
+
+.contact-info {
+  display: grid;
+  gap: var(--space-4);
+  color: var(--clr-gray-700);
+}
+
+.contact-info a {
+  color: var(--clr-primary);
+  font-weight: var(--fw-semibold);
+}
+
+.contact-info address {
+  font-style: normal;
+  line-height: var(--lh-relaxed);
+}
+
+.contact-map iframe {
+  width: 100%;
+  height: 320px;
+  border: 0;
+  border-radius: var(--radius);
+}
+
+.contact-form {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.contact-form input,
+.contact-form textarea {
+  border-radius: var(--radius);
+  border: 1px solid var(--clr-gray-300);
+  padding: var(--space-3);
+  font-size: var(--fs-base);
+}
+
+.contact-sticky-cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: var(--space-4);
+  display: none;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.contact-sticky-cta .btn {
+  pointer-events: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 767px) {
+  .contact-actions {
+    justify-content: flex-start;
+  }
+
+  .contact-sticky-cta {
+    display: flex;
+  }
+}

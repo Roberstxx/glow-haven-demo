@@ -64,6 +64,9 @@
   text-decoration: none;
   box-shadow: var(--shadow);
   transition: all var(--speed) var(--easing);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 .quick-access-card:hover {
@@ -80,11 +83,13 @@
   font-size: var(--fs-xl);
   color: var(--clr-text);
   margin-bottom: var(--space-2);
+  font-family: 'Playfair Display', serif;
 }
 
 .quick-access-card p {
   font-size: var(--fs-sm);
   color: var(--clr-gray-600);
+  line-height: var(--lh-tight);
 }
 
 /* Mini About */

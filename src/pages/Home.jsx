@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -30,6 +30,18 @@ const Home = () => {
   const featuredServices = services.slice(0, 3);
   const recentReviews = getRecentTestimonials(3);
   const featuredPortfolio = getFeaturedPortfolio();
+
+  const quickAccessItems = useMemo(() => ([
+    { to: '/servicios', icon: '💅', title: 'Servicios', subtitle: 'Catálogo completo' },
+    { to: '/experiencia', icon: '✨', title: 'Experiencia', subtitle: 'Amenidades premium' },
+    { to: '/seguridad', icon: '🛡️', title: 'Seguridad', subtitle: 'Protocolos de confianza' },
+    { to: '/politicas', icon: '📋', title: 'Políticas', subtitle: 'Recordatorios importantes' },
+    { to: '/filosofia', icon: '🎓', title: 'Filosofía', subtitle: 'Nuestro diferencial' },
+    { to: '/conocenos', icon: '🤝', title: 'Conócenos', subtitle: 'El equipo detrás' },
+    { to: '/galeria', icon: '📸', title: 'Galería', subtitle: 'Resultados reales' },
+    { to: '/faq', icon: '❓', title: 'Preguntas frecuentes', subtitle: 'Resolvemos tus dudas' },
+    { to: '/contacto', icon: '📞', title: 'Contacto', subtitle: 'Reserva tu cita' }
+  ]), []);
   
   return (
     <div className="page-wrapper">
@@ -43,7 +55,7 @@ const Home = () => {
           <div className="container hero-content">
             <h1 className="hero-title">Estudio de Belleza Elegante</h1>
             <p className="hero-subtitle">
-              Belleza segura, personalizada y con experiencia premium
+              Belleza segura, personalizada y con experiencia premium.
             </p>
             <div className="hero-ctas">
               <a
@@ -65,26 +77,13 @@ const Home = () => {
         <section className="py-12">
           <div className="container">
             <div className="quick-access-grid">
-              <Link to="/servicios" className="quick-access-card">
-                <div className="quick-access-icon">💅</div>
-                <h3>Servicios</h3>
-                <p>Catálogo completo</p>
-              </Link>
-              <Link to="/experiencia" className="quick-access-card">
-                <div className="quick-access-icon">✨</div>
-                <h3>Experiencia</h3>
-                <p>Amenidades premium</p>
-              </Link>
-              <Link to="/seguridad" className="quick-access-card">
-                <div className="quick-access-icon">🛡️</div>
-                <h3>Seguridad</h3>
-                <p>Protocolos de higiene</p>
-              </Link>
-              <Link to="/galeria" className="quick-access-card">
-                <div className="quick-access-icon">📸</div>
-                <h3>Galería</h3>
-                <p>Nuestro trabajo</p>
-              </Link>
+              {quickAccessItems.map(item => (
+                <Link key={item.to} to={item.to} className="quick-access-card">
+                  <div className="quick-access-icon" aria-hidden="true">{item.icon}</div>
+                  <h3>{item.title}</h3>
+                  <p>{item.subtitle}</p>
+                </Link>
+              ))}
             </div>
           </div>
         </section>

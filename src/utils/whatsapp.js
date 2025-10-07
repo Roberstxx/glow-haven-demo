@@ -19,27 +19,30 @@ export const buildWhatsAppUrl = ({
   servicio = '',
   fecha = '',
   hora = '',
-  nombre = ''
+  nombre = '',
+  texto = ''
 } = {}) => {
-  let message = 'Hola, me interesa agendar una cita';
-  
-  if (servicio) {
+  let message = texto || 'Hola, me interesa agendar una cita';
+
+  if (!texto && servicio) {
     message += ` para el servicio de ${servicio}`;
   }
-  
-  if (fecha) {
+
+  if (!texto && fecha) {
     message += ` para el día ${fecha}`;
   }
-  
-  if (hora) {
+
+  if (!texto && hora) {
     message += ` a las ${hora}`;
   }
-  
-  if (nombre) {
+
+  if (!texto && nombre) {
     message += `. Mi nombre es ${nombre}`;
   }
-  
-  message += '.';
+
+  if (!message.endsWith('.')) {
+    message += '.';
+  }
   
   // Encode message for URL
   const encodedMessage = encodeURIComponent(message);
