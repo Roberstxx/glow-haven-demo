@@ -175,9 +175,32 @@ export const allTags = [
 ];
 
 export const amenitiesOptions = [
-  { id: 'basico', name: 'Básico', features: ['Wifi', 'A/C', 'Música'] },
-  { id: 'confort', name: 'Confort', features: ['Wifi', 'A/C', 'Música', 'Bebidas', 'TV'] },
-  { id: 'premium', name: 'Premium', features: ['Wifi', 'A/C', 'Música', 'Snacks', 'Bebidas', 'TV Streaming', 'Champán/Vino (Novias)'] }
+  {
+    id: 'basico',
+    name: 'Básico',
+    description: 'Snack dulce + bebida simple',
+    features: ['Snack dulce de cortesía', 'Bebida simple (café, té o agua)']
+  },
+  {
+    id: 'confort',
+    name: 'Confort',
+    description: 'Snack + bebida + streaming',
+    features: [
+      'Snack dulce o salado premium',
+      'Bebida a elección (latte, té, mocktail)',
+      'Acceso a plataformas de streaming'
+    ]
+  },
+  {
+    id: 'premium',
+    name: 'Premium',
+    description: 'Champán o vino + kit exclusivo',
+    features: [
+      'Brindis con champán o vino seleccionado',
+      'Kit exclusivo para novias/eventos',
+      'Detalles personalizados de cortesía'
+    ]
+  }
 ];
 
 export const durationRanges = [

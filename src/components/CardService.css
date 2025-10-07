@@ -71,6 +71,23 @@
   gap: var(--space-2);
 }
 
+.card-service-amenities .chip {
+  background-color: rgba(247, 71, 128, 0.08);
+  border-color: rgba(247, 71, 128, 0.35);
+  color: var(--clr-text);
+  font-weight: var(--fw-medium);
+}
+
+.card-service-amenities .chip strong {
+  font-family: 'Playfair Display', serif;
+  font-weight: var(--fw-semibold);
+}
+
+.card-service-amenities .chip-detail {
+  font-weight: var(--fw-normal);
+  color: var(--clr-gray-600);
+}
+
 .card-service-meta {
   display: flex;
   gap: var(--space-6);

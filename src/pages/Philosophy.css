@@ -1,0 +1,77 @@
+.philosophy-page {
+  background: var(--clr-bg);
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-12);
+}
+
+.comparison-column {
+  border-radius: calc(var(--radius) * 1.2);
+  padding: var(--space-8);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.comparison-basic {
+  background: var(--clr-surface);
+  border: 1px solid rgba(26, 26, 26, 0.08);
+}
+
+.comparison-premium {
+  background: linear-gradient(140deg, rgba(247, 71, 128, 0.12), rgba(245, 227, 195, 0.45));
+  border: 1px solid rgba(247, 71, 128, 0.25);
+}
+
+.comparison-column h2 {
+  font-size: var(--fs-2xl);
+  font-family: 'Playfair Display', serif;
+}
+
+.comparison-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+  color: var(--clr-gray-700);
+}
+
+.comparison-column li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+}
+
+.comparison-basic li::before {
+  content: '✖';
+  color: var(--clr-gray-600);
+  margin-top: 2px;
+}
+
+.comparison-premium li::before {
+  content: '✔';
+  color: var(--clr-primary);
+  margin-top: 2px;
+}
+
+.philosophy-quote {
+  margin-top: var(--space-16);
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-3xl);
+  color: var(--clr-primary);
+}
+
+@media (max-width: 767px) {
+  .comparison-column {
+    padding: var(--space-6);
+  }
+}
