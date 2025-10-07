@@ -1,15 +1,16 @@
 import { Link } from 'react-router-dom';
 import { formatPriceRange, formatDuration } from '../utils/formatters';
 import { buildWhatsAppUrl } from '../utils/whatsapp';
+import { amenitiesOptions } from '../data/services';
 import Badge from './Badge';
 import './CardService.css';
 
-const CardService = ({ service }) => {
+const CardService = ({ service, onOpenDetail }) => {
   const handleBooking = (e) => {
     e.preventDefault();
     window.open(buildWhatsAppUrl({ servicio: service.name }), '_blank');
   };
-  
+
   // Get image path
   const imagePath = service.images && service.images.length > 0
     ? `/src/assets/images/${service.images[0]}`
@@ -45,11 +46,16 @@ const CardService = ({ service }) => {
         {/* Amenities Chips */}
         {service.amenities && service.amenities.length > 0 && (
           <div className="card-service-amenities">
-            {service.amenities.map(amenity => (
-              <span key={amenity} className="chip">
-                {amenity.charAt(0).toUpperCase() + amenity.slice(1)}
-              </span>
-            ))}
+            {service.amenities.map(amenity => {
+              const amenityInfo = amenitiesOptions.find(option => option.id === amenity);
+              if (!amenityInfo) return null;
+              return (
+                <span key={amenity} className="chip" title={amenityInfo.description}>
+                  <strong>{amenityInfo.name}</strong>
+                  <span className="chip-detail"> · {amenityInfo.description}</span>
+                </span>
+              );
+            })}
           </div>
         )}
         
@@ -76,12 +82,22 @@ const CardService = ({ service }) => {
         
         {/* CTAs */}
         <div className="card-service-actions">
-          <Link
-            to={`/servicios/${service.slug}`}
-            className="btn btn-outline btn-sm"
-          >
-            Ver detalle
-          </Link>
+          {onOpenDetail ? (
+            <button
+              type="button"
+              onClick={() => onOpenDetail(service)}
+              className="btn btn-outline btn-sm"
+            >
+              Ver detalle
+            </button>
+          ) : (
+            <Link
+              to={`/servicios/${service.slug}`}
+              className="btn btn-outline btn-sm"
+            >
+              Ver detalle
+            </Link>
+          )}
           <button
             onClick={handleBooking}
             className="btn btn-primary btn-sm"
