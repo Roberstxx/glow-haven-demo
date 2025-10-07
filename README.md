@@ -1,73 +1,60 @@
-# Welcome to your Lovable project
+# Estudio de Belleza Elegante
 
-## Project info
+Demo profesional de sitio web para estudio de belleza construido con **React + Vite** usando CSS puro (sin Tailwind).
 
-**URL**: https://lovable.dev/projects/e23b20b8-00e6-4518-bb75-3c8b7be37d1f
+## 🎨 Características
 
-## How can I edit this code?
+- ✅ Catálogo de servicios filtrable (categoría, tags, duración, precio, búsqueda)
+- ✅ Detalle de servicio con extras y requisitos
+- ✅ Galería con antes/después interactivo
+- ✅ Testimonios de clientes
+- ✅ Integración WhatsApp con mensajes prellenados
+- ✅ SEO optimizado (metas, Open Graph, JSON-LD)
+- ✅ Accesibilidad (ARIA, navegación por teclado)
+- ✅ Responsive (móvil/tablet/desktop)
+- ✅ Performance optimizado (lazy loading)
 
-There are several ways of editing your application.
+## 🚀 Instalación
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/e23b20b8-00e6-4518-bb75-3c8b7be37d1f) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 📁 Estructura
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+src/
+├── assets/images/     # Imágenes optimizadas WebP
+├── components/        # Componentes reutilizables
+├── data/             # Datos mock (servicios, testimonios, portfolio)
+├── hooks/            # Custom hooks (useFilters)
+├── pages/            # Páginas por ruta
+├── styles/           # CSS modular (variables, reset, base, layout, components)
+└── utils/            # Utilidades (formatters, whatsapp, seo)
+```
 
-**Use GitHub Codespaces**
+## 🔧 Configuración WhatsApp
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Edita `src/utils/whatsapp.js` línea 7:
+```javascript
+const WHATSAPP_NUMBER = '5215512345678'; // Tu número con código país
+```
 
-## What technologies are used for this project?
+## 📱 Rutas
 
-This project is built with:
+- `/` - Home
+- `/servicios` - Catálogo filtrable
+- `/servicios/:slug` - Detalle de servicio
+- `/galeria` - Portafolio con lightbox
+- `/contacto` - Información de contacto
+- `/conocenos` - Sobre nosotros
+- `/experiencia`, `/seguridad`, `/politicas`, `/filosofia`, `/faq`
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🎯 SEO
 
-## How can I deploy this project?
+Cada página tiene metas optimizadas. Home incluye JSON-LD BeautySalon para rich snippets.
 
-Simply open [Lovable](https://lovable.dev/projects/e23b20b8-00e6-4518-bb75-3c8b7be37d1f) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Desarrollado con ❤️ usando React + Vite

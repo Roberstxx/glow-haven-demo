@@ -1,0 +1,64 @@
+.card-review {
+  background-color: var(--clr-surface);
+  border-radius: var(--radius);
+  padding: var(--space-6);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  transition: transform var(--speed) var(--easing), box-shadow var(--speed) var(--easing);
+}
+
+.card-review:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.card-review-name {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.card-review-service {
+  font-size: var(--fs-sm);
+  color: var(--clr-gray-600);
+  margin-top: var(--space-1);
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+  font-size: var(--fs-lg);
+}
+
+.star-filled {
+  color: #FFC107;
+}
+
+.star-empty {
+  color: var(--clr-gray-300);
+}
+
+.card-review-comment {
+  font-size: var(--fs-base);
+  line-height: var(--lh-relaxed);
+  color: var(--clr-gray-700);
+  font-style: italic;
+  margin: 0;
+}
+
+.card-review-date {
+  font-size: var(--fs-xs);
+  color: var(--clr-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
