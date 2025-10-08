@@ -32,7 +32,7 @@ const Header = () => {
         <div className="header-content">
           {/* Logo */}
           <Link to="/" className="logo" aria-label="Ir a inicio">
-            <span className="logo-text">Belleza Elegante</span>
+            <span className="logo-text">AHAVAH BEAUTY STUDIO</span>
           </Link>
           
           {/* Desktop Navigation */}
@@ -108,3 +108,4 @@ const Header = () => {
 };
 
 export default Header;
+
