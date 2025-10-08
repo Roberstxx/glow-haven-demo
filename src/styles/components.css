@@ -253,3 +253,44 @@
     transform: translateX(100%);
   }
 }
+
+
+.section-preview { padding: 0; overflow: hidden; }
+.section-preview__img {
+  width: 100%; height: 180px; object-fit: cover; display: block;
+}
+.section-preview__body { padding: var(--space-6); }
+.section-preview__title { font-size: var(--fs-xl); margin-bottom: var(--space-2); }
+.section-preview__subtitle { font-size: var(--fs-sm); color: var(--clr-gray-600); margin-bottom: var(--space-4); }
+.section-preview__actions { display: flex; gap: var(--space-3); }
+@media (min-width: 1024px) { .section-preview__img { height: 220px; } }
+
+
+/* Botones estilizados */
+
+
+/* Alternancia suave */
+#servicios,
+#politicas-seguridad,
+#galeria,
+#contacto { background: hsl(var(--bg-cream-1)); }
+
+#experiencia-amenidades,
+#filosofia-conocenos,
+#opiniones,
+#faq { background: hsl(var(--bg-cream-2)); }
+
+/* Separador discreto (opcional) */
+main > section::before{
+  content:""; position:absolute; inset:auto 0 100% 0; height:1px;
+  background: linear-gradient(90deg, transparent, hsla(24,18%,30%,.12), transparent);
+}
+
+.hero-overlay{
+  background: linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.35) 50%, rgba(0,0,0,.45) 100%);
+}
+.cta-strip{
+  background: hsl(var(--bg-cream-3));
+  box-shadow: inset 0 1px 0 hsla(24,18%,30%,.08);
+}
+
