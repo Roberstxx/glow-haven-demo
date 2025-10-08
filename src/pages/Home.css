@@ -136,6 +136,25 @@
   color: rgba(255, 255, 255, 0.95);
 }
 
+
+/* Beauty Badge */
+.beauty-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-weight: 500;
+  font-size: var(--fs-sm);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin-bottom: var(--space-6);
+  animation: fadeIn var(--speed-slow) ease-out;
+}
+
+
 /* Responsive */
 @media (max-width: 767px) {
   .hero {
@@ -162,3 +181,113 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+/* Animations */
+@media (prefers-reduced-motion: no-preference){
+  .reveal{ opacity:0; transform: translateY(18px); transition: opacity .28s ease, transform .28s ease; }
+  .reveal.in-view{ opacity:1; transform:none; }
+}
+
+
+/* =========================
+   HOME — Fix de botones y detalles locales
+   (compatible con tu JSX original)
+   ========================= */
+
+/* 1) Corregir conflicto con a:hover global de base.css
+   - Aumentamos especificidad solo dentro del Home para <a class="btn ...">
+   - Sin !important, sin tocar componentes ni base
+*/
+.page-wrapper main a.btn:hover { 
+  text-decoration: none;            /* evita subrayado u overrides visuales */
+  color: inherit;                   /* neutraliza el a:hover global por defecto */
+}
+
+/* Mantener el color correcto por variante */
+.page-wrapper main a.btn.btn-primary,
+.page-wrapper main a.btn.btn-primary:hover,
+.page-wrapper main a.btn.btn-primary:focus-visible {
+  color: #fff;                      /* texto blanco en primario (normal y hover) */
+}
+
+.page-wrapper main a.btn.btn-secondary:hover,
+.page-wrapper main a.btn.btn-outline:hover,
+.page-wrapper main a.btn.btn-secondary:focus-visible,
+.page-wrapper main a.btn.btn-outline:focus-visible {
+  color: var(--clr-primary);        /* en estas variantes sí se pinta al hover */
+}
+
+/* 2) Suavizar sombras y asegurar continuidad del fondo del último bloque
+   (evita “huecos” blancos perceptibles entre secciones)
+*/
+.page-wrapper main .card { 
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+}
+.page-wrapper main .card:hover {
+  box-shadow: 0 10px 24px rgba(0,0,0,.14);
+}
+
+/* 3) Reveal suave al hacer scroll (si ya lo tenías, puedes omitir este bloque) */
+@media (prefers-reduced-motion: no-preference){
+  .reveal { 
+    opacity: 0; 
+    transform: translateY(18px); 
+    transition: opacity .28s ease, transform .28s ease; 
+  }
+  .reveal.in-view { 
+    opacity: 1; 
+    transform: none; 
+  }
+}
+
+/* 4) Badge del hero (si lo usas, dejamos el estilo aquí para no depender de inline) */
+.beauty-badge{
+  display:inline-flex; align-items:center; gap:8px;
+  background: linear-gradient(90deg, rgba(247,71,128,.85), rgba(255,228,236,.7));
+  color:#fff; font-weight:500; font-size:var(--fs-sm);
+  padding:6px 14px; border-radius:9999px; backdrop-filter:blur(6px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+}
+
+
+/* =========================
+   Fondo crema 
+   ========================= */
+
+   /* ===== Fondos crema por sección (override del inline style) ===== */
+/* Define los dos tonos (ajústalos si quieres más claro/oscuro) */
+:root{
+  --cream-1: #FFF8F2; /* crema suave */
+  --cream-2: #FFF2EA; /* crema un poco más marcada */
+}
+
+/* Valores por defecto para todas las secciones del Home */
+.page-wrapper main > section { background: #fff; }
+
+/* Si tu Home YA tiene los ids, esto es lo más limpio */
+#servicios,
+#politicas-seguridad,
+#galeria,
+#contacto { background: var(--cream-1) !important; }
+
+#experiencia-amenidades,
+#filosofia-conocenos,
+#opiniones,
+#faq { background: var(--cream-2) !important; }
+
+
+/* Opcional: separador sutil entre secciones */
+.page-wrapper main > section { position: relative; }
+.page-wrapper main > section::before{
+  content:""; position:absolute; left:0; right:0; top:-1px; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,.06), transparent);
+}
+
+/* ===== Fix de hover de botones del Home (por si aún no lo agregaste) ===== */
+.page-wrapper main a.btn:hover { color: inherit; text-decoration: none; }
+.page-wrapper main a.btn.btn-primary,
+.page-wrapper main a.btn.btn-primary:hover,
+.page-wrapper main a.btn.btn-primary:focus-visible { color:#fff; }
+.page-wrapper main a.btn.btn-secondary:hover,
+.page-wrapper main a.btn.btn-outline:hover,
+.page-wrapper main a.btn.btn-secondary:focus-visible,
+.page-wrapper main a.btn.btn-outline:focus-visible { color: var(--clr-primary); }
