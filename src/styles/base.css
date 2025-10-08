@@ -54,3 +54,30 @@ img {
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
+
+/* nuevos estyylos*/
+/* Fondo general ligeramente crema */
+html, body { background: hsl(var(--bg-page)); }
+main > section { position: relative; }
+
+/* Evitar huecos verticales entre secciones y footer */
+main > section:last-of-type { margin-bottom: 0; }
+footer { margin-top: 0; }
+
+/* Encabezados en café elegante */
+.section-title { color: hsl(var(--cafe-900)); }
+.section-subtitle { color: hsl(var(--cafe-600)); }
+
+/* Tarjetas con sombra neutra (no rosada) */
+.card { box-shadow: var(--shadow-sm); }
+.card:hover { box-shadow: var(--shadow-md); }
+
+/* Badge del hero (sacamos inline) */
+.beauty-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(90deg, hsla(24,28%,30%,.16), hsla(32,60%,96%,.6));
+  color:#fff;font-weight:500;font-size:var(--fs-sm);
+  padding:6px 14px;border-radius:9999px;backdrop-filter:blur(6px);
+  box-shadow:var(--shadow-sm);
+}
+
