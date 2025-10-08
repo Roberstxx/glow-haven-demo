@@ -1,62 +1,95 @@
 import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import CardService from '../components/CardService';
 import CardReview from '../components/CardReview';
-import BeforeAfterSlider from '../components/BeforeAfterSlider';
+
 import { services } from '../data/services';
 import { getRecentTestimonials } from '../data/testimonials';
 import { getFeaturedPortfolio } from '../data/portfolio';
+
 import { buildWhatsAppUrl } from '../utils/whatsapp';
 import { setDocumentMeta, generateBeautySalonJsonLd, injectJsonLd } from '../utils/seo';
+
 import heroImage from '../assets/images/hero.webp';
 import './Home.css';
 
 const Home = () => {
   useEffect(() => {
-    // Set SEO metadata
     setDocumentMeta({
-      title: 'Estudio de Belleza Elegante | Servicios Premium en CDMX',
-      description: 'Belleza segura, personalizada y con experiencia premium. Especialistas en uñas, maquillaje, peinados y cuidado personal con los más altos estándares de calidad.',
+      title: 'Ahavah Beauty Studio | Amarte es Belleza',
+      description:
+        'En Ahavah te consentimos con servicios seguros, personalizados y llenos de amor. Agenda por WhatsApp y vive una experiencia profesional con bioseguridad.',
       ogImage: heroImage
     });
-    
-    // Inject JSON-LD structured data
     injectJsonLd(generateBeautySalonJsonLd());
   }, []);
-  
+
+  // Efecto de revelado al hacer scroll
+
+  useEffect(() => {
+  const els = Array.from(document.querySelectorAll('main > section'));
+  els.forEach(el => el.classList.add('reveal'));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  els.forEach(el => io.observe(el));
+  return () => io.disconnect();
+}, []);
+
+
+  // ❗️Secciones que NO se tocan
   const featuredServices = services.slice(0, 3);
   const recentReviews = getRecentTestimonials(3);
-  const featuredPortfolio = getFeaturedPortfolio();
 
-  const quickAccessItems = useMemo(() => ([
-    { to: '/servicios', icon: '💅', title: 'Servicios', subtitle: 'Catálogo completo' },
-    { to: '/experiencia', icon: '✨', title: 'Experiencia', subtitle: 'Amenidades premium' },
-    { to: '/seguridad', icon: '🛡️', title: 'Seguridad', subtitle: 'Protocolos de confianza' },
-    { to: '/politicas', icon: '📋', title: 'Políticas', subtitle: 'Recordatorios importantes' },
-    { to: '/filosofia', icon: '🎓', title: 'Filosofía', subtitle: 'Nuestro diferencial' },
-    { to: '/conocenos', icon: '🤝', title: 'Conócenos', subtitle: 'El equipo detrás' },
-    { to: '/galeria', icon: '📸', title: 'Galería', subtitle: 'Resultados reales' },
-    { to: '/faq', icon: '❓', title: 'Preguntas frecuentes', subtitle: 'Resolvemos tus dudas' },
-    { to: '/contacto', icon: '📞', title: 'Contacto', subtitle: 'Reserva tu cita' }
-  ]), []);
-  
+  // Para el preview de galería (3 imágenes). Si no hay, usa el hero como fallback.
+  const galleryPreview = useMemo(() => {
+    const items = getFeaturedPortfolio().slice(0, 3);
+    return items.length ? items : [{ id: 'ph1', afterImage: heroImage, title: 'Ahavah' }];
+  }, []);
+
   return (
     <div className="page-wrapper">
       <Header />
       <WhatsAppFloat />
-      
+
       <main>
-        {/* Hero Section */}
+        {/* HERO */}
         <section className="hero" style={{ backgroundImage: `url(${heroImage})` }}>
           <div className="hero-overlay"></div>
           <div className="container hero-content">
-            <h1 className="hero-title">Estudio de Belleza Elegante</h1>
+            {/* Badge */}
+            <div
+              className="beauty-badge"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                background:
+                  'linear-gradient(90deg, rgba(247,71,128,0.85), rgba(255,228,236,0.7))',
+                color: '#fff',
+                fontWeight: 500,
+                fontSize: 'var(--fs-sm)',
+                padding: '6px 14px',
+                borderRadius: '9999px',
+                backdropFilter: 'blur(6px)',
+                boxShadow: '0 2px 6px rgba(0,0,0,.15)',
+                marginBottom: 'var(--space-6)'
+              }}
+            >
+              <span role="img" aria-label="sparkles">✨</span>
+              <span>Amor propio & bioseguridad</span>
+            </div>
+
+            <h1 className="hero-title">🌸 Amarte es Belleza 🌸</h1>
             <p className="hero-subtitle">
-              Belleza segura, personalizada y con experiencia premium.
+              En Ahavah te consentimos con servicios seguros, personalizados y llenos de amor.
+              Porque amarte siempre será el mejor plan.
             </p>
+
             <div className="hero-ctas">
               <a
                 href={buildWhatsAppUrl()}
@@ -64,7 +97,7 @@ const Home = () => {
                 rel="noopener noreferrer"
                 className="btn btn-primary btn-lg"
               >
-                Agendar por WhatsApp
+                Agenda tu cita
               </a>
               <Link to="/servicios" className="btn btn-secondary btn-lg">
                 Ver servicios
@@ -72,38 +105,21 @@ const Home = () => {
             </div>
           </div>
         </section>
-        
-        {/* Quick Access */}
-        <section className="py-12">
-          <div className="container">
-            <div className="quick-access-grid">
-              {quickAccessItems.map(item => (
-                <Link key={item.to} to={item.to} className="quick-access-card">
-                  <div className="quick-access-icon" aria-hidden="true">{item.icon}</div>
-                  <h3>{item.title}</h3>
-                  <p>{item.subtitle}</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        {/* Featured Services */}
-        <section className="py-16" style={{ backgroundColor: 'var(--clr-bg)' }}>
+
+        {/* 1) SERVICIOS (se deja igual) */}
+        <section id="servicios" className="py-16" style={{ backgroundColor: 'var(--clr-bg)' }}>
           <div className="container">
             <div className="section-header">
               <h2 className="section-title">Servicios Destacados</h2>
-              <p className="section-subtitle">
-                Descubre nuestros tratamientos más populares
-              </p>
+              <p className="section-subtitle">Descubre nuestros tratamientos más populares</p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3">
-              {featuredServices.map(service => (
+              {featuredServices.map((service) => (
                 <CardService key={service.id} service={service} />
               ))}
             </div>
-            
+
             <div className="text-center mt-8">
               <Link to="/servicios" className="btn btn-primary">
                 Ver todos los servicios
@@ -111,96 +127,215 @@ const Home = () => {
             </div>
           </div>
         </section>
-        
-        {/* Before/After Showcase */}
-        {featuredPortfolio.length > 0 && featuredPortfolio[0].beforeImage && (
-          <section className="py-16">
-            <div className="container">
-              <div className="section-header">
-                <h2 className="section-title">Transformaciones</h2>
-                <p className="section-subtitle">
-                  Ve el antes y después de nuestro trabajo
-                </p>
-              </div>
-              
-              <BeforeAfterSlider
-                beforeImage={featuredPortfolio[0].beforeImage}
-                afterImage={featuredPortfolio[0].afterImage}
-                alt={featuredPortfolio[0].title}
-              />
-              
-              <div className="text-center mt-8">
-                <Link to="/galeria" className="btn btn-outline">
-                  Ver más transformaciones
-                </Link>
-              </div>
-            </div>
-          </section>
-        )}
-        
-        {/* Testimonials */}
-        <section className="py-16" style={{ backgroundColor: 'var(--clr-bg)' }}>
+
+        {/* 2) EXPERIENCIA & AMENIDADES (preview) */}
+        <section id="experiencia-amenidades" className="py-16">
           <div className="container">
             <div className="section-header">
-              <h2 className="section-title">Lo que dicen nuestros clientes</h2>
+              <h2 className="section-title">Experiencia Ahavah</h2>
               <p className="section-subtitle">
-                Experiencias reales de personas como tú
+                Comodidad, detalle y un ambiente pensado para ti: snacks & bebidas, TV con streaming,
+                Wi-Fi, higiene visible y privacidad.
               </p>
             </div>
-            
+
+            <div className="grid md:grid-cols-2">
+              <article className="card">
+                <h3 className="mb-4">Tu visita, paso a paso</h3>
+                <ul className="flex flex-col gap-3">
+                  <li>• Recepción y evaluación breve de estilo.</li>
+                  <li>• Productos profesionales y materiales esterilizados.</li>
+                  <li>• Zona cómoda con bebida/snack según paquete.</li>
+                  <li>• Recomendaciones de cuidado post-servicio.</li>
+                </ul>
+              </article>
+
+              <article className="card">
+                <h3 className="mb-4">Amenidades</h3>
+                <ul className="flex flex-col gap-3">
+                  <li>• Wi-Fi ilimitado y cargadores disponibles.</li>
+                  <li>• A/A, música ambiental y TV con streaming.</li>
+                  <li>• Estacionamiento y privacidad.</li>
+                  <li>• Premium eventos/novias: champán o vino de cortesía.</li>
+                </ul>
+                <div className="mt-6">
+                  <Link to="/experiencia" className="btn btn-primary btn-sm">Ver experiencia completa</Link>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* 3) POLÍTICAS & SEGURIDAD (preview) */}
+        <section id="politicas-seguridad" className="py-16" style={{ backgroundColor: 'var(--clr-bg)' }}>
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Políticas & Seguridad</h2>
+              <p className="section-subtitle">La belleza empieza por la salud.</p>
+            </div>
+
+            <div className="grid md:grid-cols-2">
+              <article className="card">
+                <h3 className="mb-4">Protocolos</h3>
+                <ul className="flex flex-col gap-3">
+                  <li>• Uniforme antifluidos, guantes y mascarilla.</li>
+                  <li>• Materiales desechables y toallas limpias por cliente.</li>
+                  <li>• Limpieza quirúrgica, esterilización de instrumental.</li>
+                  <li>• Ventilación y superficies desinfectadas.</li>
+                </ul>
+                <div className="mt-6">
+                  <Link to="/seguridad" className="btn btn-outline btn-sm">Ver protocolos</Link>
+                </div>
+              </article>
+
+              <article className="card">
+                <h3 className="mb-4">Políticas de servicio</h3>
+                <ul className="flex flex-col gap-3">
+                  <li>• Agendamiento con anticipo (30%).</li>
+                  <li>• Tolerancia de 15 min; después se reprograma.</li>
+                  <li>• Sin acompañantes ni mascotas dentro del estudio.</li>
+                  <li>• Llega sin cremas/aceites; avisa si requieres remoción.</li>
+                </ul>
+                <div className="mt-6">
+                  <Link to="/politicas" className="btn btn-primary btn-sm">Ver todas las políticas</Link>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* 4) FILOSOFÍA & CONÓCENOS (preview) */}
+        <section id="filosofia-conocenos" className="py-16">
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Nuestra Esencia</h2>
+              <p className="section-subtitle">Amor propio, detalle y profesionalismo.</p>
+            </div>
+
+            <div className="grid md:grid-cols-2">
+              <article className="card">
+                <h3 className="mb-4">Filosofía</h3>
+                <p>
+                  Creemos que la belleza se siente tanto como se ve. No competimos en precio;
+                  competimos en calidad y seguridad con productos premium y atención personalizada.
+                </p>
+                <div className="mt-6">
+                  <Link to="/filosofia" className="btn btn-primary btn-sm">Nuestra filosofía</Link>
+                </div>
+              </article>
+
+              <article className="card">
+                <h3 className="mb-4">Conócenos</h3>
+                <p>
+                  Somos un equipo profesional que ama su oficio. Te recibimos en un espacio seguro,
+                  limpio y cómodo para que disfrutes una experiencia a tu medida.
+                </p>
+                <div className="mt-6">
+                  <Link to="/conocenos" className="btn btn-primary btn-sm">Conoce al estudio</Link>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* 5) GALERÍA (preview) */}
+        <section id="galeria" className="py-16" style={{ backgroundColor: 'var(--clr-bg)' }}>
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Galería</h2>
+              <p className="section-subtitle">Un vistazo a nuestros resultados</p>
+            </div>
+
+            <div className="grid md:grid-cols-3">
+              {galleryPreview.map((item) => (
+                <img
+                  key={item.id || item.title}
+                  src={item.afterImage || item.image || heroImage}
+                  alt={item.title || 'Resultado Ahavah'}
+                  loading="lazy"
+                  className="card-image"
+                  style={{ height: 220, objectFit: 'cover' }}
+                />
+              ))}
+            </div>
+
+            <div className="text-center mt-8">
+              <Link to="/galeria" className="btn btn-primary">Ver galería completa</Link>
+            </div>
+          </div>
+        </section>
+
+        {/* 6) OPINIONES (se deja igual) */}
+        <section id="opiniones" className="py-16" style={{ backgroundColor: 'var(--clr-bg)' }}>
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Lo que dicen nuestras clientas</h2>
+              <p className="section-subtitle">Experiencias reales de personas como tú</p>
+            </div>
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3">
-              {recentReviews.map(review => (
+              {recentReviews.map((review) => (
                 <CardReview key={review.id} testimonial={review} />
               ))}
             </div>
           </div>
         </section>
-        
-        {/* Mini About */}
-        <section className="py-16">
+
+        {/* 7) FAQ (preview) */}
+        <section id="faq" className="py-16">
           <div className="container">
-            <div className="about-mini">
-              <div className="about-mini-content">
-                <h2 className="section-title">Conoce nuestro estudio</h2>
-                <p className="about-mini-text">
-                  En Belleza Elegante combinamos técnica profesional, productos premium y 
-                  atención personalizada para brindarte una experiencia única. Cada servicio 
-                  es diseñado especialmente para ti, en un ambiente cómodo y seguro.
-                </p>
-                <p className="about-mini-text">
-                  Nuestro compromiso es tu satisfacción y bienestar. No competimos en precio, 
-                  competimos en calidad y seguridad.
-                </p>
-                <Link to="/conocenos" className="btn btn-primary mt-6">
-                  Conoce más sobre nosotros
-                </Link>
+            <div className="section-header">
+              <h2 className="section-title">Preguntas frecuentes</h2>
+              <p className="section-subtitle">Resolvemos tus dudas más comunes</p>
+            </div>
+
+            <div className="grid md:grid-cols-3">
+              <article className="card">
+                <h3 className="mb-2">¿Cómo reservo?</h3>
+                <p>Por WhatsApp o desde Contacto. Confirmamos fecha y hora con anticipo.</p>
+              </article>
+              <article className="card">
+                <h3 className="mb-2">¿Qué medidas de higiene aplican?</h3>
+                <p>Esterilización por cliente y superficies desinfectadas en cada servicio.</p>
+              </article>
+              <article className="card">
+                <h3 className="mb-2">¿Formas de pago?</h3>
+                <p>Efectivo y transferencia. Consulta políticas para más detalles.</p>
+              </article>
+            </div>
+
+            <div className="text-center mt-8">
+              <Link to="/faq" className="btn btn-primary">Ver todas las preguntas</Link>
+            </div>
+          </div>
+        </section>
+
+        {/* 8) CONTACTO / RESERVA (preview) */}
+        <section id="contacto" className="py-16" style={{ backgroundColor: 'var(--clr-bg)' }}>
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Contacto / Reserva</h2>
+              <p className="section-subtitle">
+                Agenda por WhatsApp o escríbenos. Aquí encuentras nuestras redes y cómo llegar.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center gap-3">
+                <a href={buildWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                  Agendar por WhatsApp
+                </a>
+                <Link to="/contacto" className="btn btn-outline">Ir a Contacto</Link>
               </div>
             </div>
           </div>
         </section>
-        
-        {/* CTA Strip */}
-        <section className="cta-strip">
-          <div className="container">
-            <div className="cta-strip-content">
-              <h2>¿Lista para lucir increíble?</h2>
-              <p>Agenda tu cita ahora y vive la experiencia Belleza Elegante</p>
-              <a
-                href={buildWhatsAppUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary btn-lg"
-              >
-                Reservar ahora
-              </a>
-            </div>
-          </div>
-        </section>
       </main>
-      
+
       <Footer />
     </div>
   );
 };
 
 export default Home;
+
