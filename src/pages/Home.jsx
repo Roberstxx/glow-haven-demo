@@ -9,7 +9,7 @@ import CardReview from '../components/CardReview';
 
 import { services } from '../data/services';
 import { getRecentTestimonials } from '../data/testimonials';
-import { getFeaturedPortfolio } from '../data/portfolio';
+import { portfolioItems } from '../data/portfolio'; // <- usamos los mismos datos que Gallery
 
 import { buildWhatsAppUrl } from '../utils/whatsapp';
 import { setDocumentMeta, generateBeautySalonJsonLd, injectJsonLd } from '../utils/seo';
@@ -29,27 +29,62 @@ const Home = () => {
   }, []);
 
   // Efecto de revelado al hacer scroll
-
   useEffect(() => {
-  const els = Array.from(document.querySelectorAll('main > section'));
-  els.forEach(el => el.classList.add('reveal'));
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-  els.forEach(el => io.observe(el));
-  return () => io.disconnect();
-}, []);
-
+    const els = Array.from(document.querySelectorAll('main > section'));
+    els.forEach(el => el.classList.add('reveal'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
   // ❗️Secciones que NO se tocan
   const featuredServices = services.slice(0, 3);
   const recentReviews = getRecentTestimonials(3);
 
-  // Para el preview de galería (3 imágenes). Si no hay, usa el hero como fallback.
+  /* ====== HOME: Preview de Galería por IDs (Opción B) ======
+    Usa IDs reales del dataset y arma src igual que Gallery.jsx:
+    /src/assets/images/${file}
+ */
+  const HOME_GALLERY_IDS = [
+    'boda-transformation',
+    'peinado-recogido-evento',
+    'unas-french',
+  ];
+
   const galleryPreview = useMemo(() => {
-    const items = getFeaturedPortfolio().slice(0, 3);
-    return items.length ? items : [{ id: 'ph1', afterImage: heroImage, title: 'Ahavah' }];
+    // Buscar por ID
+    const picked = HOME_GALLERY_IDS
+      .map(id => portfolioItems.find(it => it.id === id))
+      .filter(Boolean);
+
+    // Completar hasta 3 con featured…
+    if (picked.length < 3) {
+      const extras = getFeaturedPortfolio().filter(
+        it => !picked.some(p => p.id === it.id)
+      );
+      picked.push(...extras);
+    }
+
+    // …y si aún faltan, con los primeros que no estén ya
+    if (picked.length < 3) {
+      const extras2 = portfolioItems.filter(
+        it => !picked.some(p => p.id === it.id)
+      );
+      picked.push(...extras2);
+    }
+
+    return picked.slice(0, 3).map((it, idx) => {
+      const file = it.image || it.afterImage || it.beforeImage || '';
+      return {
+        id: it.id || `hg-${idx}`,
+        title: it.title || 'Resultado Ahavah',
+        src: file ? `/src/assets/images/${file}` : heroImage,
+      };
+    });
   }, []);
+
 
   return (
     <div className="page-wrapper">
@@ -249,12 +284,14 @@ const Home = () => {
             <div className="grid md:grid-cols-3">
               {galleryPreview.map((item) => (
                 <img
-                  key={item.id || item.title}
-                  src={item.afterImage || item.image || heroImage}
-                  alt={item.title || 'Resultado Ahavah'}
+                  key={item.id}
+                  src={item.src}
+                  alt={item.title}
                   loading="lazy"
+                  decoding="async"
                   className="card-image"
                   style={{ height: 220, objectFit: 'cover' }}
+                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = heroImage; }}
                 />
               ))}
             </div>
@@ -338,4 +375,3 @@ const Home = () => {
 };
 
 export default Home;
-
