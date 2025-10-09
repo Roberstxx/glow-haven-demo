@@ -56,3 +56,4 @@ export const getPortfolioByCategory = (category) => {
 export const getFeaturedPortfolio = () => {
   return portfolioItems.filter(item => item.featured);
 };
+
