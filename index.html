@@ -5,44 +5,46 @@
   <meta http-equiv="x-ua-compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
 
-  <!-- ====== SEO básico ====== -->
+  <!-- =========================
+       SEO BÁSICO
+  ========================== -->
   <title>Ahavah Beauty Studio | Uñas, Maquillaje y Peinados en Campeche</title>
   <meta name="description" content="Estudio profesional de belleza en San Francisco de Campeche. Uñas, maquillaje y peinados con bioseguridad, productos premium y atención personalizada." />
-  <meta name="robots" content="index, follow">
-  <meta name="author" content="Ahavah Beauty Studio">
-  <meta name="geo.region" content="MX-CAM">
-  <meta name="geo.placename" content="San Francisco de Campeche">
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="author" content="Ahavah Beauty Studio" />
+  <meta name="geo.region" content="MX-CAM" />
+  <meta name="geo.placename" content="San Francisco de Campeche" />
   <link rel="canonical" href="https://glow-haven-demo.vercel.app/" />
+  <!-- hreflang (mismo destino por ahora) -->
+  <link rel="alternate" hreflang="es-MX" href="https://glow-haven-demo.vercel.app/" />
+  <link rel="alternate" hreflang="x-default" href="https://glow-haven-demo.vercel.app/" />
 
-  <!-- Canonical & robots -->
-<link rel="canonical" href="https://glow-haven-demo.vercel.app/">
-<meta name="robots" content="index,follow">
+  <!-- =========================
+       OPEN GRAPH / TWITTER
+       (Imagen en /public/img/ahavah-cover.jpg – 1200×630)
+  ========================== -->
+  <meta property="og:locale" content="es_MX" />
+  <meta property="og:site_name" content="Ahavah Beauty Studio" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://glow-haven-demo.vercel.app/" />
+  <meta property="og:title" content="Ahavah Beauty Studio | Belleza segura en Campeche" />
+  <meta property="og:description" content="Uñas, maquillaje y peinados con protocolos de bioseguridad en San Francisco de Campeche." />
+  <meta property="og:image" content="https://glow-haven-demo.vercel.app/img/ahavah-cover.jpg?v=3" />
+  <meta property="og:image:secure_url" content="https://glow-haven-demo.vercel.app/img/ahavah-cover.jpg?v=3" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Logo de Ahavah Beauty Studio sobre fondo rosa" />
 
-<!-- HTML Meta -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ahavah Beauty Studio | Belleza segura en Campeche" />
+  <meta name="twitter:description" content="Uñas, maquillaje y peinados con protocolos de bioseguridad en San Francisco de Campeche." />
+  <meta name="twitter:image" content="https://glow-haven-demo.vercel.app/img/ahavah-cover.jpg?v=3" />
+  <meta name="twitter:image:alt" content="Logo de Ahavah Beauty Studio sobre fondo rosa" />
 
-<!-- Open Graph -->
-<meta property="og:locale" content="es_MX">
-<meta property="og:site_name" content="Ahavah Beauty Studio">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://glow-haven-demo.vercel.app/">
-<meta property="og:title" content="Ahavah Beauty Studio | Belleza segura en Campeche">
-<meta property="og:description" content="Uñas, maquillaje y peinados con protocolos de bioseguridad en San Francisco de Campeche.">
-<meta property="og:image" content="https://glow-haven-demo.vercel.app/img/ahavah-cover.jpg?v=3">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Logo de Ahavah Beauty Studio sobre fondo rosa">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://glow-haven-demo.vercel.app/">
-<meta name="twitter:title" content="Ahavah Beauty Studio | Belleza segura en Campeche">
-<meta name="twitter:description" content="Uñas, maquillaje y peinados con protocolos de bioseguridad en San Francisco de Campeche.">
-<meta name="twitter:image" content="https://glow-haven-demo.vercel.app/img/ahavah-cover.jpg?v=3">
-<meta name="twitter:image:alt" content="Logo de Ahavah Beauty Studio sobre fondo rosa">
-
-
-  <!-- ====== Favicon / PWA (pon lo generado por RealFaviconGenerator en /public/favicons) ====== -->
-  <!-- Ejemplo si los guardas en /favicons: -->
+  <!-- =========================
+       FAVICONS / PWA (coloca los archivos generados en /public/favicons)
+  ========================== -->
   <!--
   <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
@@ -52,12 +54,19 @@
   <link rel="shortcut icon" href="/favicons/favicon.ico">
   <meta name="msapplication-TileColor" content="#f74780">
   -->
-  <meta name="theme-color" content="#f74780">
+  <meta name="theme-color" content="#f74780" />
 
-  <!-- (Opcional) Preload de la imagen principal del hero -->
-  <link rel="preload" href="/img/ahavah-hero.webp" as="image">
+  <!-- Performance (opcional) -->
+  <link rel="preload" href="/img/ahavah-hero.webp" as="image" />
+  <!-- Si usas Google Fonts, habilita preconnect:
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  -->
 
-  <!-- ====== JSON-LD LocalBusiness (BeautySalon) ====== -->
+  <!-- =========================
+       JSON-LD (Beauty Salon + WebSite)
+       *Actualiza teléfono/dirección/redes cuando las tengas definitivas.
+  ========================== -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -87,10 +96,21 @@
     ]
   }
   </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Ahavah Beauty Studio",
+    "url": "https://glow-haven-demo.vercel.app/"
+  }
+  </script>
 </head>
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
+</html>
+
 </html>
 
