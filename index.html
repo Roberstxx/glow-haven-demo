@@ -1,80 +1,87 @@
 <!doctype html>
 <html lang="es-MX">
-
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
 
-  <title>Ahavah Beauty Studio | Belleza segura en Campeche</title>
-  <meta name="description"
-    content="Estudio profesional de belleza en San Francisco de Campeche. Uñas, maquillaje y peinado con bioseguridad, productos premium y atención personalizada." />
-  <meta name="author" content="Ahavah Beauty Studio" />
+  <!-- ====== SEO básico ====== -->
+  <title>Ahavah Beauty Studio | Uñas, Maquillaje y Peinados en Campeche</title>
+  <meta name="description" content="Estudio profesional de belleza en San Francisco de Campeche. Uñas, maquillaje y peinados con bioseguridad, productos premium y atención personalizada." />
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Ahavah Beauty Studio">
+  <meta name="geo.region" content="MX-CAM">
+  <meta name="geo.placename" content="San Francisco de Campeche">
   <link rel="canonical" href="https://glow-haven-demo.vercel.app/" />
 
-  <!-- Robots -->
-  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <!-- ====== Open Graph (WhatsApp/FB/Discord) ====== -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Ahavah Beauty Studio">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:title" content="Ahavah Beauty Studio | Belleza segura en Campeche">
+  <meta property="og:description" content="Uñas, maquillaje y peinados con protocolos de bioseguridad en San Francisco de Campeche.">
+  <meta property="og:url" content="https://glow-haven-demo.vercel.app/">
+  <meta property="og:image" content="https://glow-haven-demo.vercel.app/img/ahavah-cover.jpg?v=1">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Logo de Ahavah Beauty Studio sobre fondo rosa">
 
+  <!-- ====== Twitter Card ====== -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ahavah Beauty Studio | Belleza segura en Campeche">
+  <meta name="twitter:description" content="Uñas, maquillaje y peinados con bioseguridad.">
+  <meta name="twitter:image" content="https://glow-haven-demo.vercel.app/img/ahavah-cover.jpg?v=1">
 
+  <!-- ====== Favicon / PWA (pon lo generado por RealFaviconGenerator en /public/favicons) ====== -->
+  <!-- Ejemplo si los guardas en /favicons: -->
+  <!--
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+  <link rel="manifest" href="/favicons/site.webmanifest">
+  <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#f74780">
+  <link rel="shortcut icon" href="/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#f74780">
+  -->
+  <meta name="theme-color" content="#f74780">
 
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Ahavah Beauty Studio">
-<meta property="og:locale" content="es_MX">
-<meta property="og:title" content="Ahavah Beauty Studio | Belleza segura en Campeche">
-<meta property="og:description" content="Uñas, maquillaje y peinados con bioseguridad.">
-<meta property="og:url" content="https://glow-haven-demo.vercel.app/">
-<meta property="og:image" content="https://glow-haven-demo.vercel.app/og/ahavah-cover-v2.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Logo de Ahavah Beauty Studio sobre fondo rosa">
+  <!-- (Opcional) Preload de la imagen principal del hero -->
+  <link rel="preload" href="/img/ahavah-hero.webp" as="image">
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ahavah Beauty Studio | Belleza segura en Campeche">
-<meta name="twitter:description" content="Uñas, maquillaje y peinados con bioseguridad.">
-<meta name="twitter:image" content="https://glow-haven-demo.vercel.app/og/ahavah-cover-v2.jpg">
-
-
-  <!-- Preconnect (si usas Google Fonts, etc.) -->
-  <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
-
-  <!-- JSON-LD LocalBusiness (BeautySalon) -->
+  <!-- ====== JSON-LD LocalBusiness (BeautySalon) ====== -->
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BeautySalon",
-      "name": "Ahavah Beauty Studio",
-      "image": "https://tu-dominio.mx/og/ahavah-cover.jpg",
-      "url": "https://tu-dominio.mx/",
-      "telephone": "+52 1 555 123 4567",
-      "priceRange": "$$",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Av. Ejemplo 123, Col. Centro",
-        "addressLocality": "San Francisco de Campeche",
-        "addressRegion": "Campeche",
-        "postalCode": "24000",
-        "addressCountry": "MX"
-      },
-      "areaServed": {
-        "@type": "City",
-        "name": "San Francisco de Campeche"
-      },
-      "openingHoursSpecification": [
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "10:00", "closes": "20:00" },
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "18:00" }
-      ],
-      "sameAs": [
-        "https://www.instagram.com/tuusuario",
-        "https://www.facebook.com/tuusuario",
-        "https://wa.me/5215551234567"
-      ]
-    }
-    </script>
+  {
+    "@context": "https://schema.org",
+    "@type": "BeautySalon",
+    "name": "Ahavah Beauty Studio",
+    "image": "https://glow-haven-demo.vercel.app/img/logo.png",
+    "url": "https://glow-haven-demo.vercel.app/",
+    "telephone": "+52 1 555 123 4567",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. Ejemplo 123, Col. Centro",
+      "addressLocality": "San Francisco de Campeche",
+      "addressRegion": "Campeche",
+      "postalCode": "24000",
+      "addressCountry": "MX"
+    },
+    "areaServed": { "@type": "City", "name": "San Francisco de Campeche" },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "10:00", "closes": "20:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "18:00" }
+    ],
+    "sameAs": [
+      "https://www.instagram.com/tuusuario",
+      "https://www.facebook.com/tuusuario",
+      "https://wa.me/5215551234567"
+    ]
+  }
+  </script>
 </head>
-
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
-
 </html>
+
