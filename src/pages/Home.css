@@ -267,13 +267,28 @@
 #servicios,
 #politicas-seguridad,
 #galeria,
-#contacto { background: var(--cream-1) !important; }
+
+#faq { background: var(--cream-1) !important; }
 
 #experiencia-amenidades,
 #filosofia-conocenos,
-#opiniones,
-#faq { background: var(--cream-2) !important; }
+#contacto,
+#opiniones
+ { background: var(--cream-2) !important; }
 
+/* --- Alternativa SIN ids (por orden), por si aún no los tienes ---
+   1=Hero, 2=Servicios, 3=Experiencia, 4=Políticas, 5=Filosofía/Conócenos,
+   6=Galería, 7=Opiniones, 8=FAQ, 9=Contacto
+.page-wrapper main > section:nth-of-type(2),
+.page-wrapper main > section:nth-of-type(4),
+.page-wrapper main > section:nth-of-type(6),
+.page-wrapper main > section:nth-of-type(9){ background: var(--cream-1) !important; }
+
+.page-wrapper main > section:nth-of-type(3),
+.page-wrapper main > section:nth-of-type(5),
+.page-wrapper main > section:nth-of-type(7),
+.page-wrapper main > section:nth-of-type(8){ background: var(--cream-2) !important; }
+*/
 
 /* Opcional: separador sutil entre secciones */
 .page-wrapper main > section { position: relative; }
@@ -291,3 +306,65 @@
 .page-wrapper main a.btn.btn-outline:hover,
 .page-wrapper main a.btn.btn-secondary:focus-visible,
 .page-wrapper main a.btn.btn-outline:focus-visible { color: var(--clr-primary); }
+
+/* ===== HOME: pegar footer al último bloque ===== */
+
+/* Quita cualquier margen inferior del último section del Home */
+.page-wrapper main > section:last-of-type {
+  margin-bottom: 0 !important;
+}
+
+/* Quita el margen superior global del footer SOLO en Home */
+.page-wrapper footer {
+  margin-top: 0 !important;
+}
+
+/* (opcional) Si aún ves una “línea” clara es el separador que
+   agregamos con ::before. Evítalo en el último bloque. */
+.page-wrapper main > section:last-of-type::before {
+  display: none;
+}
+
+
+/* ===== HERO A PANTALLA COMPLETA ===== */
+/* Si tu header es fijo, pon aquí su alto real. 
+   Si NO es fijo, déjalo en 0px. */
+:root { --header-h: 72px; }
+
+/* Ocupa todo el alto visible, con la imagen en cover */
+.hero{
+  inline-size: 100%;
+  block-size: calc(100svh - var(--header-h));  /* alto visible menos header */
+  min-block-size: calc(100svh - var(--header-h));
+  display: grid;                 /* centrado del contenido */
+  place-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  padding: 0;                    /* evita que el padding altere el alto */
+}
+
+/* Asegura que el contenido quede sobre el overlay y centrado */
+.hero .hero-content{
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding-block: clamp(8px, 3vh, 24px);
+  margin-inline: auto;
+}
+
+/* Overlay: si prefieres menos opacidad para ver mejor la foto, ajusta valores */
+.hero-overlay{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,0) 55%),
+    linear-gradient(180deg, rgba(255,245,238,0) 70%, rgba(255,245,238,.65) 100%);
+}
+
+/* Mobile: si tu header es más bajo en móvil, ajusta la variable */
+@media (max-width: 640px){
+  :root { --header-h: 64px; }
+}
