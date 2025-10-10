@@ -98,24 +98,24 @@ const Gallery = () => {
                     </div>
                   </div>
                 ) : (
-                  // Single Image Item
-                  <button
-                    onClick={() => openLightbox(item)}
-                    className="gallery-image-btn"
-                    aria-label={`Ver ${item.title}`}
-                  >
-                    <img
-                      <img src={item.image} ... />
+                  {/* Single Image Item */}
+<button
+  onClick={() => openLightbox(item)}
+  className="gallery-image-btn"
+  aria-label={`Ver ${item.title}`}
+>
+  <img
+    src={item.image}          // <— ya NO uses /src/assets/...
+    alt={item.title}
+    className="gallery-image"
+    loading="lazy"
+  />
+  <div className="gallery-item-overlay">
+    <h3 className="gallery-item-title">{item.title}</h3>
+    <p className="gallery-item-description">{item.description}</p>
+  </div>
+</button>
 
-                      alt={item.title}
-                      className="gallery-image"
-                      loading="lazy"
-                    />
-                    <div className="gallery-item-overlay">
-                      <h3 className="gallery-item-title">{item.title}</h3>
-                      <p className="gallery-item-description">{item.description}</p>
-                    </div>
-                  </button>
                 )}
               </article>
             ))}
