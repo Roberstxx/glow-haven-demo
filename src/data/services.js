@@ -13,7 +13,7 @@ export const services = [
     tags: ['popular', 'duracion-media'],
     amenities: ['basico', 'confort'],
     badge: 'popular',
-    images: ['unas1.webp'],
+    images: ['/images/unas1.webp'],
     extras: [
       'Remoción de uñas anteriores (si aplica): +$100',
       'Diseño con esmalte gel: +$150',
@@ -39,7 +39,7 @@ export const services = [
     tags: ['premium', 'ocasion-especial'],
     amenities: ['confort', 'premium'],
     badge: 'premium',
-    images: ['maquillaje1.webp'],
+    images: ['/images/maquillaje1.webp'],
     extras: [
       'Maquillaje para novia (incluye prueba): $1,500',
       'Técnica airbrush: +$300',
@@ -66,7 +66,7 @@ export const services = [
     tags: ['ocasion-especial', 'popular'],
     amenities: ['basico', 'confort'],
     badge: 'popular',
-    images: ['peinado1.webp'],
+    images: ['/images/peinado1.webp'],
     extras: [
       'Peinado para novia (incluye prueba): $1,200',
       'Extensiones temporales: +$400',
@@ -93,7 +93,7 @@ export const services = [
     tags: ['basico', 'rapido'],
     amenities: ['basico'],
     badge: null,
-    images: ['corte1.webp'],
+    images: ['/images/corte1.webp'],
     extras: [
       'Arreglo de barba: +$150',
       'Tinte o matizado: +$400',
@@ -118,7 +118,7 @@ export const services = [
     tags: ['basico', 'popular'],
     amenities: ['basico'],
     badge: 'popular',
-    images: ['unas1.webp'],
+    images: ['/images/unas1.webp'],
     extras: [
       'Remoción de gel anterior: +$80',
       'Diseño simple (francés, degradado): +$100',
@@ -215,3 +215,4 @@ export const priceRanges = [
   { id: 'alto', name: '$600 - $1000', min: 600, max: 1000 },
   { id: 'premium', name: 'Más de $1000', min: 1000, max: 999999 }
 ];
+
