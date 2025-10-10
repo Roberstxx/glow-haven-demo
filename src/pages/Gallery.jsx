@@ -105,11 +105,11 @@ const Gallery = () => {
   aria-label={`Ver ${item.title}`}
 >
   <img
-    src={item.image}          // <— ya NO uses /src/assets/...
-    alt={item.title}
-    className="gallery-image"
-    loading="lazy"
-  />
+  src={lightboxImage.image}   // <— ya NO uses /src/assets/...
+  alt={lightboxImage.title}
+  className="lightbox-image"
+/>
+
   <div className="gallery-item-overlay">
     <h3 className="gallery-item-title">{item.title}</h3>
     <p className="gallery-item-description">{item.description}</p>
