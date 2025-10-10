@@ -105,7 +105,8 @@ const Gallery = () => {
                     aria-label={`Ver ${item.title}`}
                   >
                     <img
-                      src={`/src/assets/images/${item.image}`}
+                      <img src={item.image} ... />
+
                       alt={item.title}
                       className="gallery-image"
                       loading="lazy"
@@ -146,7 +147,8 @@ const Gallery = () => {
           </button>
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
             <img
-              src={`/src/assets/images/${lightboxImage.image}`}
+              <img src={lightboxImage.image} ... />
+
               alt={lightboxImage.title}
               className="lightbox-image"
             />
