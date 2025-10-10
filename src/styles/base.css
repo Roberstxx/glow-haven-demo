@@ -1,6 +1,11 @@
 /* Base Styles */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
 
+/* Global Background */
+html, body {
+  background: hsl(var(--bg-page));
+}
+
 body {
   font-family: var(--ff-body);
   font-size: var(--fs-base);
@@ -55,28 +60,84 @@ img {
   border-radius: var(--radius-sm);
 }
 
-/* nuevos estyylos*/
-/* Fondo general ligeramente crema */
-html, body { background: hsl(var(--bg-page)); }
-main > section { position: relative; }
+/* Section Spacing - Evitar huecos entre secciones */
+main > section:last-of-type {
+  margin-bottom: 0;
+}
 
-/* Evitar huecos verticales entre secciones y footer */
-main > section:last-of-type { margin-bottom: 0; }
-footer { margin-top: 0; }
+footer {
+  margin-top: 0;
+}
 
-/* Encabezados en café elegante */
-.section-title { color: hsl(var(--cafe-900)); }
-.section-subtitle { color: hsl(var(--cafe-600)); }
+/* Section Title Styles */
+.section-title {
+  color: hsl(var(--cafe-900));
+}
 
-/* Tarjetas con sombra neutra (no rosada) */
-.card { box-shadow: var(--shadow-sm); }
-.card:hover { box-shadow: var(--shadow-md); }
+.section-subtitle {
+  color: hsl(var(--cafe-600));
+}
 
-/* Badge del hero (sacamos inline) */
-.beauty-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:linear-gradient(90deg, hsla(24,28%,30%,.16), hsla(32,60%,96%,.6));
-  color:#fff;font-weight:500;font-size:var(--fs-sm);
-  padding:6px 14px;border-radius:9999px;backdrop-filter:blur(6px);
-  box-shadow:var(--shadow-sm);
+/* Card Styles */
+.card {
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--speed) var(--easing);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Beauty Badge (Hero) */
+.beauty-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, hsla(24,28%,30%,.16), hsla(32,60%,96%,.6));
+  color: #fff;
+  font-weight: 500;
+  font-size: var(--fs-sm);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Hero Overlay */
+.hero-overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.35) 50%, rgba(0,0,0,.45) 100%);
+}
+
+/* CTA Strip */
+.cta-strip {
+  background: hsl(var(--bg-cream-3));
+  box-shadow: inset 0 1px 0 hsla(24,18%,30%,.08);
+}
+
+/* Alternating Section Backgrounds */
+#servicios,
+#politicas-seguridad,
+#galeria,
+#contacto {
+  background: hsl(var(--bg-cream-1));
+}
+
+#experiencia-amenidades,
+#filosofia-conocenos,
+#opiniones,
+#faq {
+  background: hsl(var(--bg-cream-2));
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  h1 {
+    font-size: var(--fs-4xl);
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --container-padding: var(--space-4);
+  }
 }
