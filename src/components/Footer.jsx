@@ -89,12 +89,11 @@ export default function Footer() {
       <div className="container footer-bottom">
         <p>© {new Date().getFullYear()} Ahavah Beauty Studio. Todos los derechos reservados.</p>
         <nav aria-label="Legal" className="footer-legal">
-          <Link to="/politicas">Políticas</Link>
-          <span aria-hidden="true">·</span>
-          <Link to="/privacidad">Privacidad</Link>
+          
+          <span aria-hidden="true"></span>
+          
         </nav>
       </div>
     </footer>
   );
 }
-
