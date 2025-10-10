@@ -11,47 +11,44 @@ import './Gallery.css';
 const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [lightboxImage, setLightboxImage] = useState(null);
-  
+
   useEffect(() => {
     setDocumentMeta({
       title: 'Galería de Resultados | Estudio de Belleza Elegante',
-      description: 'Mira nuestros trabajos: transformaciones antes/después, diseños de uñas, maquillajes y peinados profesionales.'
+      description:
+        'Mira nuestros trabajos: transformaciones antes/después, diseños de uñas, maquillajes y peinados profesionales.'
     });
   }, []);
-  
+
   const filteredPortfolio = selectedCategory
     ? getPortfolioByCategory(selectedCategory)
     : portfolioItems;
-  
-  const openLightbox = (item) => {
-    setLightboxImage(item);
-  };
-  
-  const closeLightbox = () => {
-    setLightboxImage(null);
-  };
-  
+
+  const openLightbox = (item) => setLightboxImage(item);
+  const closeLightbox = () => setLightboxImage(null);
+
+  // Esc para cerrar lightbox
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') closeLightbox();
     };
-    
+
     if (lightboxImage) {
       document.addEventListener('keydown', handleEscape);
       document.body.style.overflow = 'hidden';
     }
-    
+
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = '';
     };
   }, [lightboxImage]);
-  
+
   return (
     <div className="page-wrapper">
       <Header />
       <WhatsAppFloat />
-      
+
       <main className="gallery-page">
         <div className="container py-8">
           <header className="page-header mb-12">
@@ -60,7 +57,7 @@ const Gallery = () => {
               Descubre nuestros trabajos y transformaciones
             </p>
           </header>
-          
+
           {/* Category Filters */}
           <div className="gallery-filters mb-8">
             <button
@@ -69,7 +66,7 @@ const Gallery = () => {
             >
               Todos
             </button>
-            {categories.map(cat => (
+            {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
@@ -79,10 +76,10 @@ const Gallery = () => {
               </button>
             ))}
           </div>
-          
+
           {/* Gallery Grid */}
           <div className="gallery-grid">
-            {filteredPortfolio.map(item => (
+            {filteredPortfolio.map((item) => (
               <article key={item.id} className="gallery-item">
                 {item.beforeImage && item.afterImage ? (
                   // Before/After Item
@@ -98,37 +95,38 @@ const Gallery = () => {
                     </div>
                   </div>
                 ) : (
-                  {/* Single Image Item */}
-<button
-  onClick={() => openLightbox(item)}
-  className="gallery-image-btn"
-  aria-label={`Ver ${item.title}`}
->
-  <img
-  src={lightboxImage.image}   // <— ya NO uses /src/assets/...
-  alt={lightboxImage.title}
-  className="lightbox-image"
-/>
-
-  <div className="gallery-item-overlay">
-    <h3 className="gallery-item-title">{item.title}</h3>
-    <p className="gallery-item-description">{item.description}</p>
-  </div>
-</button>
-
+                  // Single Image Item
+                  <button
+                    onClick={() => openLightbox(item)}
+                    className="gallery-image-btn"
+                    aria-label={`Ver ${item.title}`}
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="gallery-image"
+                      loading="lazy"
+                    />
+                    <div className="gallery-item-overlay">
+                      <h3 className="gallery-item-title">{item.title}</h3>
+                      <p className="gallery-item-description">{item.description}</p>
+                    </div>
+                  </button>
                 )}
               </article>
             ))}
           </div>
-          
+
           {filteredPortfolio.length === 0 && (
             <div className="empty-state">
-              <p className="empty-state-text">No hay trabajos en esta categoría aún.</p>
+              <p className="empty-state-text">
+                No hay trabajos en esta categoría aún.
+              </p>
             </div>
           )}
         </div>
       </main>
-      
+
       {/* Lightbox Modal */}
       {lightboxImage && (
         <div
@@ -145,10 +143,12 @@ const Gallery = () => {
           >
             ✕
           </button>
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="lightbox-content"
+            onClick={(e) => e.stopPropagation()}
+          >
             <img
-              <img src={lightboxImage.image} ... />
-
+              src={lightboxImage.image}
               alt={lightboxImage.title}
               className="lightbox-image"
             />
@@ -159,7 +159,7 @@ const Gallery = () => {
           </div>
         </div>
       )}
-      
+
       <Footer />
     </div>
   );
