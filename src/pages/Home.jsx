@@ -80,7 +80,8 @@ const Home = () => {
       return {
         id: it.id || `hg-${idx}`,
         title: it.title || 'Resultado Ahavah',
-        src: file ? `/src/assets/images/${file}` : heroImage,
+        src: file.startsWith('/images/') ? file : `/images/${file}`,
+
       };
     });
   }, []);
