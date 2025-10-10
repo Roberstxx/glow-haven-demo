@@ -12,10 +12,8 @@ const CardService = ({ service, onOpenDetail }) => {
   };
 
   // Get image path
-  const imagePath = service.images && service.images.length > 0
-    ? service.images[0]
+  const imagePath = service.images?.[0] ?? null; // ya viene como "/images/archivo.webp"
 
-    : null;
   
   return (
     <article className="card-service">
