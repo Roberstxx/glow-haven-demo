@@ -1,3 +1,4 @@
+// Mock data for portfolio/gallery items
 export const portfolioItems = [
   {
     id: 'boda-transformation',
@@ -46,3 +47,12 @@ export const portfolioItems = [
     featured: false
   }
 ];
+
+export const getPortfolioByCategory = (category) => {
+  if (!category) return portfolioItems;
+  return portfolioItems.filter(item => item.category === category);
+};
+
+export const getFeaturedPortfolio = () => {
+  return portfolioItems.filter(item => item.featured);
+};
