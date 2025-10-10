@@ -11,7 +11,7 @@
   gap:32px;
   grid-template-columns: 1.2fr 1fr 1fr 1fr;
   align-items:flex-start;
-  border-bottom:1px solid rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(255, 253, 253, 0.08);
   padding-bottom:28px;
   margin-bottom:22px;
 }
@@ -97,3 +97,6 @@
 /* Los SVG ya quedan en blanco */
 .footer-social .social-icon svg { fill:#fff; }
 
+.footer-text {
+  color: #f8f6f6;
+}
