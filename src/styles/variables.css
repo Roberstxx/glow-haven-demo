@@ -104,6 +104,16 @@
   --max-width-2xl: 1536px;
   
   --container-padding: var(--space-4);
+  
+  /* Custom Backgrounds - Tonos Crema */
+  --bg-page: 40 20% 98%;
+  --bg-cream-1: 40 25% 97%;
+  --bg-cream-2: 40 30% 96%;
+  --bg-cream-3: 35 35% 94%;
+  
+  /* Custom Colors - Café */
+  --cafe-900: 24 18% 30%;
+  --cafe-600: 24 12% 50%;
 }
 
 /* Responsive Typography */
