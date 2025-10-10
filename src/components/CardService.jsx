@@ -13,7 +13,8 @@ const CardService = ({ service, onOpenDetail }) => {
 
   // Get image path
   const imagePath = service.images && service.images.length > 0
-    ? `/src/assets/images/${service.images[0]}`
+    ? service.images[0]
+
     : null;
   
   return (
