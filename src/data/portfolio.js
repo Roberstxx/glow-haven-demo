@@ -1,12 +1,11 @@
-// Mock data for portfolio/gallery items
 export const portfolioItems = [
   {
     id: 'boda-transformation',
     title: 'Transformación Novia',
     category: 'maquillaje',
     serviceId: 'maquillaje-evento',
-    beforeImage: 'before-boda.webp',
-    afterImage: 'after-boda.webp',
+    beforeImage: '/images/before-boda.webp',
+    afterImage: '/images/after-boda.webp',
     description: 'Maquillaje y peinado completo para novia. Look romántico y elegante con técnica de larga duración.',
     featured: true
   },
@@ -15,7 +14,7 @@ export const portfolioItems = [
     title: 'Uñas Acrílicas Francés',
     category: 'unas',
     serviceId: 'unas-acrilicas-naturales',
-    image: 'unas1.webp',
+    image: '/images/unas1.webp',
     description: 'Set completo de uñas acrílicas con diseño francés clásico.',
     featured: false
   },
@@ -24,7 +23,7 @@ export const portfolioItems = [
     title: 'Recogido Elegante',
     category: 'cabello',
     serviceId: 'peinado-recogido',
-    image: 'peinado1.webp',
+    image: '/images/peinado1.webp',
     description: 'Peinado recogido sofisticado para evento de gala.',
     featured: true
   },
@@ -33,7 +32,7 @@ export const portfolioItems = [
     title: 'Maquillaje Natural',
     category: 'maquillaje',
     serviceId: 'maquillaje-evento',
-    image: 'maquillaje1.webp',
+    image: '/images/maquillaje1.webp',
     description: 'Maquillaje natural con técnica de iluminación para look fresco.',
     featured: false
   },
@@ -42,18 +41,8 @@ export const portfolioItems = [
     title: 'Corte Fade Moderno',
     category: 'cabello',
     serviceId: 'corte-caballero',
-    image: 'corte1.webp',
+    image: '/images/corte1.webp',
     description: 'Corte degradado con acabado texturizado y moderno.',
     featured: false
   }
 ];
-
-export const getPortfolioByCategory = (category) => {
-  if (!category) return portfolioItems;
-  return portfolioItems.filter(item => item.category === category);
-};
-
-export const getFeaturedPortfolio = () => {
-  return portfolioItems.filter(item => item.featured);
-};
-
