@@ -44,30 +44,6 @@ type ScrollBehaviorSetting = ScrollBehavior | 'instant';
 const normalizeBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
   behavior === 'smooth' ? 'smooth' : 'auto';
 
-const runWithBehavior = (
-  behavior: ScrollBehavior,
-  callback: () => void
-) => {
-  if (behavior !== 'auto') {
-    callback();
-    return;
-  }
-
-  const { documentElement, body } = document;
-  const previousDocumentBehavior = documentElement.style.scrollBehavior;
-  const previousBodyBehavior = body.style.scrollBehavior;
-
-  documentElement.style.scrollBehavior = 'auto';
-  body.style.scrollBehavior = 'auto';
-
-  try {
-    callback();
-  } finally {
-    documentElement.style.scrollBehavior = previousDocumentBehavior;
-    body.style.scrollBehavior = previousBodyBehavior;
-  }
-};
-
 const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
   const { pathname, search, hash } = useLocation();
 
@@ -78,6 +54,7 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
 
     let rafId: number | undefined;
     const resolvedBehavior = normalizeBehavior(behavior);
+
     if (hash) {
       const scrollToHash = () => {
         const target = findHashTarget(hash);
@@ -86,9 +63,10 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
           return false;
         }
 
-        runWithBehavior(resolvedBehavior, () =>
+        runWithInstantScroll(() =>
           target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
         );
+        target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' });
         return true;
       };
 
@@ -103,9 +81,10 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
       };
     }
 
-    runWithBehavior(resolvedBehavior, () =>
+    runWithInstantScroll(() =>
       window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior })
     );
+    window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior });
 
     return () => {
       if (rafId !== undefined) {
