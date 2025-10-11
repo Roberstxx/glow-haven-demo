@@ -143,7 +143,7 @@ src/
 - [ ] Tests de build y lint ejecutados
 
 ## Recursos útiles
-- [Guía de Tailwind](https://tailwindcss.com/docs) – Referencia para utilidades y buenas prácticas.
+- [MDN Web Docs](https://developer.mozilla.org/es/) – Referencia oficial de HTML, CSS y JavaScript.
 - [Radix UI](https://www.radix-ui.com/primitives) – Documentación de componentes accesibles.
 - [Shadcn UI](https://ui.shadcn.com/docs) – Patrones de componentes reutilizables.
 - [Vite](https://vitejs.dev/guide/) – Configuración y optimización del bundler.
