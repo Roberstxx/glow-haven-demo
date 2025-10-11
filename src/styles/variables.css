@@ -95,15 +95,16 @@
   --z-modal-backdrop: 400;
   --z-modal: 500;
   --z-toast: 600;
-  
+
   /* Layout */
   --max-width-sm: 640px;
   --max-width-md: 768px;
   --max-width-lg: 1024px;
   --max-width-xl: 1280px;
   --max-width-2xl: 1536px;
-  
+
   --container-padding: var(--space-4);
+  --header-offset: 72px;
   
   /* Custom Backgrounds - Tonos Crema */
   --bg-page: 40 20% 98%;

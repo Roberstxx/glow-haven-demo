@@ -15,7 +15,13 @@
 
 /* Evita el desbordamiento horizontal */
 html, body {
+  min-height: 100dvh;
   overflow-x: hidden;
+}
+
+/* Compensaciones de scroll */
+[id] {
+  scroll-margin-top: var(--header-offset);
 }
 
 /* Color de fondo global */
@@ -25,14 +31,13 @@ body {
   font-family: var(--ff-body);
   font-size: var(--fs-base);
   line-height: var(--lh-normal);
-  min-height: 100vh;
 }
 
 /* Contenedor raíz */
 #root {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* Imágenes y multimedia adaptables */

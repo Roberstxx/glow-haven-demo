@@ -63,6 +63,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   -->
 
+  <!-- Evita restauraciones automáticas de scroll en navegación del historial -->
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+  </script>
+
   <!-- =========================
        JSON-LD (Beauty Salon + WebSite)
        *Actualiza teléfono/dirección/redes cuando las tengas definitivas.
