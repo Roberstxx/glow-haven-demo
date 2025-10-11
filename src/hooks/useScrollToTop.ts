@@ -41,8 +41,41 @@ const findHashTarget = (hash: string) => {
 
 type ScrollBehaviorSetting = ScrollBehavior | 'instant';
 
-const normalizeBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
+const resolveScrollBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
   behavior === 'smooth' ? 'smooth' : 'auto';
+
+const runWithInstantScroll = (
+  behavior: ScrollBehaviorSetting,
+  callback: (resolved: ScrollBehavior) => void
+) => {
+  const resolvedBehavior = resolveScrollBehavior(behavior);
+
+  if (!isBrowser || behavior !== 'instant') {
+    callback(resolvedBehavior);
+    return;
+  }
+
+  const { documentElement } = document;
+  const body = document.body;
+
+  if (!documentElement || !body) {
+    callback(resolvedBehavior);
+    return;
+  }
+
+  const previousDocumentBehavior = documentElement.style.scrollBehavior;
+  const previousBodyBehavior = body.style.scrollBehavior;
+
+  documentElement.style.scrollBehavior = 'auto';
+  body.style.scrollBehavior = 'auto';
+
+  try {
+    callback(resolvedBehavior);
+  } finally {
+    documentElement.style.scrollBehavior = previousDocumentBehavior;
+    body.style.scrollBehavior = previousBodyBehavior;
+  }
+};
 
 const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
   const { pathname, search, hash } = useLocation();
@@ -53,8 +86,6 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
     }
 
     let rafId: number | undefined;
-    const resolvedBehavior = normalizeBehavior(behavior);
-
     if (hash) {
       const scrollToHash = () => {
         const target = findHashTarget(hash);
@@ -63,10 +94,9 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
           return false;
         }
 
-        runWithInstantScroll(() =>
+        runWithInstantScroll(behavior, (resolvedBehavior) =>
           target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
         );
-        target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' });
         return true;
       };
 
@@ -81,10 +111,9 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
       };
     }
 
-    runWithInstantScroll(() =>
+    runWithInstantScroll(behavior, (resolvedBehavior) =>
       window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior })
     );
-    window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior });
 
     return () => {
       if (rafId !== undefined) {
