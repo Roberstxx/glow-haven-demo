@@ -14,7 +14,6 @@ const decodeHash = (hash: string) => {
 
 const tryQuerySelector = (hash: string) => {
   if (!hash) return null;
-
   try {
     return document.querySelector(hash);
   } catch {
@@ -81,18 +80,14 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
   const { pathname, search, hash } = useLocation();
 
   useIsomorphicLayoutEffect(() => {
-    if (!isBrowser) {
-      return;
-    }
+    if (!isBrowser) return;
 
     let rafId: number | undefined;
+
     if (hash) {
       const scrollToHash = () => {
         const target = findHashTarget(hash);
-
-        if (!target) {
-          return false;
-        }
+        if (!target) return false;
 
         runWithInstantScroll(behavior, (resolvedBehavior) =>
           target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
@@ -100,14 +95,10 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
         return true;
       };
 
-      if (!scrollToHash()) {
-        rafId = window.requestAnimationFrame(scrollToHash);
-      }
+      if (!scrollToHash()) rafId = window.requestAnimationFrame(scrollToHash);
 
       return () => {
-        if (rafId !== undefined) {
-          window.cancelAnimationFrame(rafId);
-        }
+        if (rafId !== undefined) window.cancelAnimationFrame(rafId);
       };
     }
 
@@ -116,11 +107,10 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
     );
 
     return () => {
-      if (rafId !== undefined) {
-        window.cancelAnimationFrame(rafId);
-      }
+      if (rafId !== undefined) window.cancelAnimationFrame(rafId);
     };
   }, [pathname, search, hash, behavior]);
 };
 
 export default useScrollToTop;
+
