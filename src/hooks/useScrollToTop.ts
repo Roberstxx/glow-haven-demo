@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 const useIsomorphicLayoutEffect =
   typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
-const useScrollToTop = (behavior: ScrollBehavior = 'auto') => {
+const useScrollToTop = (behavior: ScrollBehavior = 'instant') => {
   const { pathname, search, hash } = useLocation();
 
   useIsomorphicLayoutEffect(() => {
@@ -12,7 +12,7 @@ const useScrollToTop = (behavior: ScrollBehavior = 'auto') => {
       const target = document.querySelector(hash);
 
       if (target) {
-        target.scrollIntoView({ behavior: 'auto', block: 'start' });
+        target.scrollIntoView({ behavior, block: 'start' });
         return;
       }
     }
