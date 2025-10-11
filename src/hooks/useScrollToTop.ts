@@ -101,23 +101,24 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
     }
 
     let rafId: number | undefined;
+
     if (hash) {
-      const scrollToHash = () => {
+      const attemptScrollToHash = () => {
         const target = findHashTarget(hash);
 
         if (!target) {
-          return false;
+          rafId = window.requestAnimationFrame(attemptScrollToHash);
+          return;
         }
+
+        rafId = undefined;
 
         runWithInstantScroll(behavior, (resolvedBehavior) =>
           target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
         );
-        return true;
       };
 
-      if (!scrollToHash()) {
-        rafId = window.requestAnimationFrame(scrollToHash);
-      }
+      attemptScrollToHash();
 
       return () => {
         if (rafId !== undefined) {
@@ -129,12 +130,6 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
     runWithInstantScroll(behavior, (resolvedBehavior) =>
       window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior })
     );
-
-    return () => {
-      if (rafId !== undefined) {
-        window.cancelAnimationFrame(rafId);
-      }
-    };
   }, [pathname, search, hash, behavior]);
 };
 
