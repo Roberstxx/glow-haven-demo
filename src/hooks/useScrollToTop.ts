@@ -113,3 +113,4 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
 };
 
 export default useScrollToTop;
+
