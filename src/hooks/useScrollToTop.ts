@@ -63,6 +63,9 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
           return false;
         }
 
+        runWithInstantScroll(() =>
+          target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
+        );
         target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' });
         return true;
       };
@@ -78,6 +81,9 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
       };
     }
 
+    runWithInstantScroll(() =>
+      window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior })
+    );
     window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior });
 
     return () => {
