@@ -35,10 +35,10 @@ const findHashTarget = (hash: string) => {
   if (!hash) return null;
 
   const decoded = decodeHash(hash);
-  const escaped =
-    typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
-      ? CSS.escape(decoded)
-      : decoded;
+  // @ts-ignore: CSS.escape may not be in TS DOM lib
+  const escaped = typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+    ? CSS.escape(decoded)
+    : decoded;
 
   return (
     document.getElementById(decoded) ??
@@ -48,18 +48,32 @@ const findHashTarget = (hash: string) => {
   );
 };
 
+ codex/corregir-problemas-de-pull-request-tz1l1g
 const resolveScrollBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
   behavior === 'smooth' ? 'smooth' : 'auto';
 
 type RestoreScrollBehavior = () => void;
 
+
+type ScrollBehaviorSetting = ScrollBehavior | 'instant';
+
+const resolveScrollBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
+  behavior === 'smooth' ? 'smooth' : 'auto';
+
+/** Forza scroll-behavior: auto !important temporalmente y restaura con prioridad. */
+type RestoreScrollBehavior = () => void;
+ main
 const overrideScrollBehavior = (element: HTMLElement): RestoreScrollBehavior => {
   const style = element.style;
   const previousValue = style.getPropertyValue('scroll-behavior');
   const previousPriority = style.getPropertyPriority('scroll-behavior');
+ codex/corregir-problemas-de-pull-request-tz1l1g
 
   style.setProperty('scroll-behavior', 'auto', 'important');
 
+
+  style.setProperty('scroll-behavior', 'auto', 'important');
+ main
   return () => {
     if (previousValue) {
       style.setProperty('scroll-behavior', previousValue, previousPriority);
@@ -69,6 +83,7 @@ const overrideScrollBehavior = (element: HTMLElement): RestoreScrollBehavior => 
   };
 };
 
+codex/corregir-problemas-de-pull-request-tz1l1g
 const withInstantScroll = (
   behavior: ScrollBehaviorSetting,
   callback: (resolved: ScrollBehavior) => void
@@ -77,6 +92,16 @@ const withInstantScroll = (
 
   if (!isBrowser || behavior !== 'instant') {
     callback(resolved);
+
+const runWithInstantScroll = (
+  behavior: ScrollBehaviorSetting,
+  callback: (resolved: ScrollBehavior) => void
+) => {
+  const resolvedBehavior = resolveScrollBehavior(behavior);
+
+  if (!isBrowser || behavior !== 'instant') {
+    callback(resolvedBehavior);
+main
     return;
   }
 
@@ -84,6 +109,7 @@ const withInstantScroll = (
   const body = document.body;
 
   if (!documentElement || !body) {
+ codex/corregir-problemas-de-pull-request-tz1l1g
     callback(resolved);
     return;
   }
@@ -116,6 +142,34 @@ export default function useScrollToTop(
       activeElement.blur();
     }
 
+    callback(resolvedBehavior);
+    return;
+  }
+
+  const restoreDocumentBehavior = overrideScrollBehavior(documentElement);
+  const restoreBodyBehavior = overrideScrollBehavior(body);
+
+  try {
+    callback(resolvedBehavior);
+  } finally {
+    restoreDocumentBehavior();
+    restoreBodyBehavior();
+  }
+};
+
+/** 
+ * Hook de scroll: 
+ * - por defecto 'instant' (sin animación visible),
+ * - respeta #hash si existe,
+ * - corre en useLayoutEffect (o useEffect en SSR).
+ */
+const useScrollToTop = (behavior: ScrollBehaviorSetting = 'instant') => {
+  const { pathname, search, hash } = useLocation();
+
+  useIsomorphicLayoutEffect(() => {
+    if (!isBrowser) return;
+ main
+
     const headerQuery = headerSelector ?? null;
     const header = headerQuery
       ? document.querySelector<HTMLElement>(headerQuery)
@@ -128,6 +182,7 @@ export default function useScrollToTop(
         : 0;
 
     let rafId: number | undefined;
+codex/corregir-problemas-de-pull-request-tz1l1g
 
     const scrollToPosition = (y: number) =>
       withInstantScroll(behavior, (resolved) => {
@@ -164,19 +219,43 @@ export default function useScrollToTop(
 
       attemptScroll();
 
+    if (hash) {
+      const scrollToHash = () => {
+        const target = findHashTarget(hash);
+        if (!target) return false;
+
+        runWithInstantScroll(behavior, (resolvedBehavior) =>
+          target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
+        );
+        return true;
+      };
+
+      if (!scrollToHash()) rafId = window.requestAnimationFrame(scrollToHash);
+ main
+
       return () => {
-        if (rafId !== undefined) {
-          window.cancelAnimationFrame(rafId);
-        }
+        if (rafId !== undefined) window.cancelAnimationFrame(rafId);
       };
     }
 
+codex/corregir-problemas-de-pull-request-tz1l1g
     scrollToPosition(0);
 
+    runWithInstantScroll(behavior, (resolvedBehavior) =>
+      window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior })
+    );
+ main
+
     return () => {
-      if (rafId !== undefined) {
-        window.cancelAnimationFrame(rafId);
-      }
+      if (rafId !== undefined) window.cancelAnimationFrame(rafId);
     };
+codex/corregir-problemas-de-pull-request-tz1l1g
   }, [pathname, search, hash, behavior, headerSelector]);
 }
+
+  }, [pathname, search, hash, behavior]);
+};
+
+export default useScrollToTop;
+
+ main
