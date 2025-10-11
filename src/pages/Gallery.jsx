@@ -6,9 +6,12 @@ import BeforeAfterSlider from '../components/BeforeAfterSlider';
 import { portfolioItems, getPortfolioByCategory } from '../data/portfolio';
 import { categories } from '../data/services';
 import { setDocumentMeta } from '../utils/seo';
+import useScrollToTop from '../hooks/useScrollToTop';
 import './Gallery.css';
 
 const Gallery = () => {
+  useScrollToTop();
+
   const [selectedCategory, setSelectedCategory] = useState('');
   const [lightboxImage, setLightboxImage] = useState(null);
 

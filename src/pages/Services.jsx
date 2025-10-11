@@ -8,9 +8,12 @@ import ServiceDetailModal from '../components/ServiceDetailModal';
 import { services, amenitiesOptions } from '../data/services';
 import { useFilters } from '../hooks/useFilters';
 import { setDocumentMeta } from '../utils/seo';
+import useScrollToTop from '../hooks/useScrollToTop';
 import './Services.css';
 
 const Services = () => {
+  useScrollToTop();
+
   const [selectedService, setSelectedService] = useState(null);
   const {
     filters,

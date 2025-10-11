@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import { setDocumentMeta } from '../utils/seo';
+import useScrollToTop from '../hooks/useScrollToTop';
 import './Experience.css';
 
 const amenities = [
@@ -19,6 +20,8 @@ const amenities = [
 ];
 
 const Experience = () => {
+  useScrollToTop();
+
   useEffect(() => {
     setDocumentMeta({ title: 'Experiencia & Amenidades | Estudio Elegante' });
   }, []);
