@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import { setDocumentMeta } from '../utils/seo';
+import useScrollToTop from '../hooks/useScrollToTop';
 import './Policies.css';
 
 const policyCards = [
@@ -67,6 +68,8 @@ const PoliciesModal = ({ open, onClose }) => {
 };
 
 const Policies = () => {
+  useScrollToTop();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {

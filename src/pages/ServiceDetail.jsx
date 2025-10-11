@@ -7,8 +7,11 @@ import { services } from '../data/services';
 import { formatPriceRange, formatDuration } from '../utils/formatters';
 import { buildWhatsAppUrl } from '../utils/whatsapp';
 import { setDocumentMeta } from '../utils/seo';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 const ServiceDetail = () => {
+  useScrollToTop();
+
   const { slug } = useParams();
   const service = services.find((s) => s.slug === slug);
 

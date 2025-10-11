@@ -4,9 +4,12 @@ import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import { setDocumentMeta } from '../utils/seo';
 import stylistImage from '../assets/images/hero.webp';
+import useScrollToTop from '../hooks/useScrollToTop';
 import './About.css';
 
 const About = () => {
+  useScrollToTop();
+
   useEffect(() => {
     setDocumentMeta({
       title: 'Conócenos | Estudio de Belleza Elegante',
