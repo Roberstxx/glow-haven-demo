@@ -13,11 +13,14 @@ import { portfolioItems } from '../data/portfolio'; // <- usamos los mismos dato
 
 import { buildWhatsAppUrl } from '../utils/whatsapp';
 import { setDocumentMeta, generateBeautySalonJsonLd, injectJsonLd } from '../utils/seo';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 import heroImage from '../assets/images/hero.webp';
 import './Home.css';
 
 const Home = () => {
+  useScrollToTop();
+
   useEffect(() => {
     setDocumentMeta({
       title: 'Ahavah Beauty Studio | Amarte es Belleza',

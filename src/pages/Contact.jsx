@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import { setDocumentMeta } from '../utils/seo';
+import useScrollToTop from '../hooks/useScrollToTop';
 import './Contact.css';
 
 const EMAIL_TO = 'Correoooo'; // cámbialo por tu correo real
@@ -42,6 +43,8 @@ const IconTT = () => (
 );
 
 const Contact = () => {
+  useScrollToTop();
+
   useEffect(() => {
     setDocumentMeta({
       title: 'Contacto | Ahavah Beauty Studio',
