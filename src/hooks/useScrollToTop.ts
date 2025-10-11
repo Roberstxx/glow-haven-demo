@@ -14,7 +14,6 @@ const decodeHash = (hash: string) => {
 
 const tryQuerySelector = (hash: string) => {
   if (!hash) return null;
-
   try {
     return document.querySelector(hash);
   } catch {
@@ -41,55 +40,89 @@ const findHashTarget = (hash: string) => {
 
 type ScrollBehaviorSetting = ScrollBehavior | 'instant';
 
-const normalizeBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
+const resolveScrollBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
   behavior === 'smooth' ? 'smooth' : 'auto';
 
-const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
+type RestoreScrollBehavior = () => void;
+
+const overrideScrollBehavior = (element: HTMLElement): RestoreScrollBehavior => {
+  const style = element.style;
+  const previousValue = style.getPropertyValue('scroll-behavior');
+  const previousPriority = style.getPropertyPriority('scroll-behavior');
+
+  style.setProperty('scroll-behavior', 'auto', 'important');
+
+  return () => {
+    if (previousValue) {
+      style.setProperty('scroll-behavior', previousValue, previousPriority);
+    } else {
+      style.removeProperty('scroll-behavior');
+    }
+  };
+};
+
+const runWithInstantScroll = (
+  behavior: ScrollBehaviorSetting,
+  callback: (resolved: ScrollBehavior) => void
+) => {
+  const resolvedBehavior = resolveScrollBehavior(behavior);
+
+  if (!isBrowser || behavior !== 'instant') {
+    callback(resolvedBehavior);
+    return;
+  }
+
+  const { documentElement } = document;
+  const body = document.body;
+
+  if (!documentElement || !body) {
+    callback(resolvedBehavior);
+    return;
+  }
+
+  const restoreDocumentBehavior = overrideScrollBehavior(documentElement);
+  const restoreBodyBehavior = overrideScrollBehavior(body);
+
+  try {
+    callback(resolvedBehavior);
+  } finally {
+    restoreDocumentBehavior();
+    restoreBodyBehavior();
+  }
+};
+
+const useScrollToTop = (behavior: ScrollBehaviorSetting = 'instant') => {
   const { pathname, search, hash } = useLocation();
 
   useIsomorphicLayoutEffect(() => {
-    if (!isBrowser) {
-      return;
-    }
+    if (!isBrowser) return;
 
     let rafId: number | undefined;
-    const resolvedBehavior = normalizeBehavior(behavior);
 
     if (hash) {
       const scrollToHash = () => {
         const target = findHashTarget(hash);
+        if (!target) return false;
 
-        if (!target) {
-          return false;
-        }
-
-        runWithInstantScroll(() =>
+        runWithInstantScroll(behavior, (resolvedBehavior) =>
           target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
         );
-        target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' });
         return true;
       };
 
-      if (!scrollToHash()) {
-        rafId = window.requestAnimationFrame(scrollToHash);
-      }
+      if (!scrollToHash()) rafId = window.requestAnimationFrame(scrollToHash);
 
       return () => {
-        if (rafId !== undefined) {
-          window.cancelAnimationFrame(rafId);
-        }
+        if (rafId !== undefined) window.cancelAnimationFrame(rafId);
       };
     }
 
-    runWithInstantScroll(() =>
+    runWithInstantScroll(behavior, (resolvedBehavior) =>
       window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior })
     );
-    window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior });
 
     return () => {
-      if (rafId !== undefined) {
-        window.cancelAnimationFrame(rafId);
-      }
+      if (rafId !== undefined) window.cancelAnimationFrame(rafId);
     };
   }, [pathname, search, hash, behavior]);
 };
