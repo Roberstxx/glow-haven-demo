@@ -39,7 +39,12 @@ const findHashTarget = (hash: string) => {
   );
 };
 
-const useScrollToTop = (behavior: ScrollBehavior = 'instant') => {
+type ScrollBehaviorSetting = ScrollBehavior | 'instant';
+
+const normalizeBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
+  behavior === 'smooth' ? 'smooth' : 'auto';
+
+const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
   const { pathname, search, hash } = useLocation();
 
   useIsomorphicLayoutEffect(() => {
@@ -48,6 +53,7 @@ const useScrollToTop = (behavior: ScrollBehavior = 'instant') => {
     }
 
     let rafId: number | undefined;
+    const resolvedBehavior = normalizeBehavior(behavior);
 
     if (hash) {
       const scrollToHash = () => {
@@ -57,7 +63,7 @@ const useScrollToTop = (behavior: ScrollBehavior = 'instant') => {
           return false;
         }
 
-        target.scrollIntoView({ behavior, block: 'start' });
+        target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' });
         return true;
       };
 
@@ -72,7 +78,7 @@ const useScrollToTop = (behavior: ScrollBehavior = 'instant') => {
       };
     }
 
-    window.scrollTo({ top: 0, left: 0, behavior });
+    window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior });
 
     return () => {
       if (rafId !== undefined) {
