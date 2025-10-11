@@ -3,8 +3,11 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import { setDocumentMeta } from '../utils/seo';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 const FAQ = () => {
+  useScrollToTop();
+
   useEffect(() => { setDocumentMeta({ title: 'Preguntas Frecuentes | Estudio Elegante' }); }, []);
   
   const faqs = [

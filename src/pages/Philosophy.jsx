@@ -3,9 +3,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import { setDocumentMeta } from '../utils/seo';
+import useScrollToTop from '../hooks/useScrollToTop';
 import './Philosophy.css';
 
 const Philosophy = () => {
+  useScrollToTop();
+
   useEffect(() => {
     setDocumentMeta({
       title: 'Nuestra Filosofía | Estudio Elegante',
