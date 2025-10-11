@@ -54,26 +54,6 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
 
     let rafId: number | undefined;
     const resolvedBehavior = normalizeBehavior(behavior);
-    const runWithInstantScroll = (callback: () => void) => {
-      if (resolvedBehavior !== 'auto') {
-        callback();
-        return;
-      }
-
-      const { documentElement, body } = document;
-      const previousDocumentBehavior = documentElement.style.scrollBehavior;
-      const previousBodyBehavior = body.style.scrollBehavior;
-
-      documentElement.style.scrollBehavior = 'auto';
-      body.style.scrollBehavior = 'auto';
-
-      try {
-        callback();
-      } finally {
-        documentElement.style.scrollBehavior = previousDocumentBehavior;
-        body.style.scrollBehavior = previousBodyBehavior;
-      }
-    };
 
     if (hash) {
       const scrollToHash = () => {
@@ -86,6 +66,7 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
         runWithInstantScroll(() =>
           target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
         );
+        target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' });
         return true;
       };
 
@@ -103,6 +84,7 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
     runWithInstantScroll(() =>
       window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior })
     );
+    window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior });
 
     return () => {
       if (rafId !== undefined) {
