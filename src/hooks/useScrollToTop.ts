@@ -25,10 +25,10 @@ const findHashTarget = (hash: string) => {
   if (!hash) return null;
 
   const decoded = decodeHash(hash);
-  const escaped =
-    typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
-      ? CSS.escape(decoded)
-      : decoded;
+  // @ts-ignore: CSS.escape may not be in TS DOM lib
+  const escaped = typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+    ? CSS.escape(decoded)
+    : decoded;
 
   return (
     document.getElementById(decoded) ??
@@ -43,15 +43,13 @@ type ScrollBehaviorSetting = ScrollBehavior | 'instant';
 const resolveScrollBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
   behavior === 'smooth' ? 'smooth' : 'auto';
 
+/** Forza scroll-behavior: auto !important temporalmente y restaura con prioridad. */
 type RestoreScrollBehavior = () => void;
-
 const overrideScrollBehavior = (element: HTMLElement): RestoreScrollBehavior => {
   const style = element.style;
   const previousValue = style.getPropertyValue('scroll-behavior');
   const previousPriority = style.getPropertyPriority('scroll-behavior');
-
   style.setProperty('scroll-behavior', 'auto', 'important');
-
   return () => {
     if (previousValue) {
       style.setProperty('scroll-behavior', previousValue, previousPriority);
@@ -91,6 +89,12 @@ const runWithInstantScroll = (
   }
 };
 
+/** 
+ * Hook de scroll: 
+ * - por defecto 'instant' (sin animación visible),
+ * - respeta #hash si existe,
+ * - corre en useLayoutEffect (o useEffect en SSR).
+ */
 const useScrollToTop = (behavior: ScrollBehaviorSetting = 'instant') => {
   const { pathname, search, hash } = useLocation();
 
@@ -128,3 +132,4 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'instant') => {
 };
 
 export default useScrollToTop;
+
