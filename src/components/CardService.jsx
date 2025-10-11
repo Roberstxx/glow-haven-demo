@@ -11,10 +11,11 @@ const CardService = ({ service, onOpenDetail }) => {
     window.open(buildWhatsAppUrl({ servicio: service.name }), '_blank');
   };
 
-  // Get image path
-  const imagePath = service.images?.[0] ?? null; // ya viene como "/images/archivo.webp"
+  // ✅ Ruta corregida:
+  // Antes: `/src/assets/images/${service.images[0]}`
+  // Ahora: usamos directamente `service.images[0]` porque ya viene como '/images/...' desde services.js
+  const imagePath = service.images?.[0] ?? null;
 
-  
   return (
     <article className="card-service">
       {/* Image */}
@@ -33,20 +34,20 @@ const CardService = ({ service, onOpenDetail }) => {
           )}
         </div>
       )}
-      
+
       {/* Content */}
       <div className="card-service-content">
         <h3 className="card-service-title">{service.name}</h3>
-        
+
         <p className="card-service-description">
           {service.shortDescription}
         </p>
-        
+
         {/* Amenities Chips */}
         {service.amenities && service.amenities.length > 0 && (
           <div className="card-service-amenities">
-            {service.amenities.map(amenity => {
-              const amenityInfo = amenitiesOptions.find(option => option.id === amenity);
+            {service.amenities.map((amenity) => {
+              const amenityInfo = amenitiesOptions.find((o) => o.id === amenity);
               if (!amenityInfo) return null;
               return (
                 <span key={amenity} className="chip" title={amenityInfo.description}>
@@ -57,7 +58,7 @@ const CardService = ({ service, onOpenDetail }) => {
             })}
           </div>
         )}
-        
+
         {/* Meta Info */}
         <div className="card-service-meta">
           <div className="card-service-meta-item">
@@ -67,7 +68,7 @@ const CardService = ({ service, onOpenDetail }) => {
             </svg>
             <span>{formatDuration(service.duration)}</span>
           </div>
-          
+
           <div className="card-service-meta-item">
             <svg className="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -78,7 +79,7 @@ const CardService = ({ service, onOpenDetail }) => {
             </span>
           </div>
         </div>
-        
+
         {/* CTAs */}
         <div className="card-service-actions">
           {onOpenDetail ? (
@@ -90,17 +91,11 @@ const CardService = ({ service, onOpenDetail }) => {
               Ver detalle
             </button>
           ) : (
-            <Link
-              to={`/servicios/${service.slug}`}
-              className="btn btn-outline btn-sm"
-            >
+            <Link to={`/servicios/${service.slug}`} className="btn btn-outline btn-sm">
               Ver detalle
             </Link>
           )}
-          <button
-            onClick={handleBooking}
-            className="btn btn-primary btn-sm"
-          >
+          <button onClick={handleBooking} className="btn btn-primary btn-sm">
             Agendar
           </button>
         </div>
