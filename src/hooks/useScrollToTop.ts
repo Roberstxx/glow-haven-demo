@@ -1,8 +1,7 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const isBrowser = typeof window !== 'undefined';
-const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect;
 
 const decodeHash = (hash: string) => {
   try {
@@ -41,20 +40,67 @@ const findHashTarget = (hash: string) => {
 
 type ScrollBehaviorSetting = ScrollBehavior | 'instant';
 
-const normalizeBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
+const resolveScrollBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
   behavior === 'smooth' ? 'smooth' : 'auto';
+
+const setScrollBehavior = (element: HTMLElement | null, value: ScrollBehavior) => {
+  if (!element) {
+    return () => {};
+  }
+
+  const previousValue = element.style.getPropertyValue('scroll-behavior');
+  const previousPriority = element.style.getPropertyPriority('scroll-behavior');
+
+  element.style.setProperty('scroll-behavior', value, 'important');
+
+  return () => {
+    if (previousValue) {
+      element.style.setProperty('scroll-behavior', previousValue, previousPriority);
+    } else {
+      element.style.removeProperty('scroll-behavior');
+    }
+  };
+};
+
+const runWithInstantScroll = (
+  behavior: ScrollBehaviorSetting,
+  callback: (resolved: ScrollBehavior) => void
+) => {
+  const resolvedBehavior = resolveScrollBehavior(behavior);
+
+  if (!isBrowser || behavior !== 'instant') {
+    callback(resolvedBehavior);
+    return;
+  }
+
+  const { documentElement } = document;
+  const body = document.body;
+
+  if (!documentElement || !body) {
+    callback(resolvedBehavior);
+    return;
+  }
+
+  const restoreDocumentBehavior = setScrollBehavior(documentElement, 'auto');
+  const restoreBodyBehavior = setScrollBehavior(body, 'auto');
+
+  try {
+    callback(resolvedBehavior);
+  } finally {
+    restoreDocumentBehavior();
+    restoreBodyBehavior();
+  }
+};
 
 const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
   const { pathname, search, hash } = useLocation();
 
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (!isBrowser) {
       return;
     }
 
     let rafId: number | undefined;
-    const resolvedBehavior = normalizeBehavior(behavior);
-
     if (hash) {
       const scrollToHash = () => {
         const target = findHashTarget(hash);
@@ -63,10 +109,9 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
           return false;
         }
 
-        runWithInstantScroll(() =>
+        runWithInstantScroll(behavior, (resolvedBehavior) =>
           target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
         );
-        target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' });
         return true;
       };
 
@@ -81,10 +126,9 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
       };
     }
 
-    runWithInstantScroll(() =>
+    runWithInstantScroll(behavior, (resolvedBehavior) =>
       window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior })
     );
-    window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior });
 
     return () => {
       if (rafId !== undefined) {
