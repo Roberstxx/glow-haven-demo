@@ -1,8 +1,18 @@
-import { useEffect, useLayoutEffect } from 'react';
+import * as React from 'react';
 import { useLocation } from 'react-router-dom';
 
+type ScrollBehaviorSetting = 'instant' | ScrollBehavior;
+
 const isBrowser = typeof window !== 'undefined';
-const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect;
+const reactWithInsertion = React as typeof React & {
+  useInsertionEffect?: typeof React.useLayoutEffect;
+};
+const useClientLayoutEffect: typeof React.useLayoutEffect = isBrowser
+  ? React.useLayoutEffect
+  : React.useEffect;
+const usePrePaint: typeof React.useLayoutEffect =
+  (isBrowser ? reactWithInsertion.useInsertionEffect : undefined) ??
+  useClientLayoutEffect;
 
 const decodeHash = (hash: string) => {
   try {
@@ -14,7 +24,6 @@ const decodeHash = (hash: string) => {
 
 const tryQuerySelector = (hash: string) => {
   if (!hash) return null;
-
   try {
     return document.querySelector(hash);
   } catch {
@@ -39,40 +48,121 @@ const findHashTarget = (hash: string) => {
   );
 };
 
-type ScrollBehaviorSetting = ScrollBehavior | 'instant';
-
-const normalizeBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
+const resolveScrollBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
   behavior === 'smooth' ? 'smooth' : 'auto';
 
-const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
+type RestoreScrollBehavior = () => void;
+
+const overrideScrollBehavior = (element: HTMLElement): RestoreScrollBehavior => {
+  const style = element.style;
+  const previousValue = style.getPropertyValue('scroll-behavior');
+  const previousPriority = style.getPropertyPriority('scroll-behavior');
+
+  style.setProperty('scroll-behavior', 'auto', 'important');
+
+  return () => {
+    if (previousValue) {
+      style.setProperty('scroll-behavior', previousValue, previousPriority);
+    } else {
+      style.removeProperty('scroll-behavior');
+    }
+  };
+};
+
+const withInstantScroll = (
+  behavior: ScrollBehaviorSetting,
+  callback: (resolved: ScrollBehavior) => void
+) => {
+  const resolved = resolveScrollBehavior(behavior);
+
+  if (!isBrowser || behavior !== 'instant') {
+    callback(resolved);
+    return;
+  }
+
+  const { documentElement } = document;
+  const body = document.body;
+
+  if (!documentElement || !body) {
+    callback(resolved);
+    return;
+  }
+
+  const restoreDocument = overrideScrollBehavior(documentElement);
+  const restoreBody = overrideScrollBehavior(body);
+
+  try {
+    callback(resolved);
+  } finally {
+    restoreDocument();
+    restoreBody();
+  }
+};
+
+const shouldOffsetHeader = (position: string) =>
+  position === 'fixed' || position === 'sticky';
+
+export default function useScrollToTop(
+  behavior: ScrollBehaviorSetting = 'instant',
+  headerSelector: string | null = '.header'
+) {
   const { pathname, search, hash } = useLocation();
 
-  useIsomorphicLayoutEffect(() => {
-    if (!isBrowser) {
-      return;
+  usePrePaint(() => {
+    if (!isBrowser) return;
+
+    const activeElement = document.activeElement as HTMLElement | null;
+    if (activeElement && typeof activeElement.blur === 'function') {
+      activeElement.blur();
     }
 
+    const headerQuery = headerSelector ?? null;
+    const header = headerQuery
+      ? document.querySelector<HTMLElement>(headerQuery)
+      : null;
+
+    const headerStyles = header ? getComputedStyle(header) : null;
+    const headerHeight =
+      header && headerStyles && shouldOffsetHeader(headerStyles.position)
+        ? header.offsetHeight
+        : 0;
+
     let rafId: number | undefined;
-    const resolvedBehavior = normalizeBehavior(behavior);
+
+    const scrollToPosition = (y: number) =>
+      withInstantScroll(behavior, (resolved) => {
+        window.scrollTo({
+          top: Math.max(0, y),
+          left: 0,
+          behavior: resolved,
+        });
+      });
+
+    const jumpToHash = () => {
+      if (!hash) return true;
+
+      const target = findHashTarget(hash);
+      if (!target) return false;
+
+      const targetOffset = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+      scrollToPosition(targetOffset);
+      return true;
+    };
 
     if (hash) {
-      const scrollToHash = () => {
-        const target = findHashTarget(hash);
+      let attempts = 6;
 
-        if (!target) {
-          return false;
+      const attemptScroll = () => {
+        if (jumpToHash()) {
+          return;
         }
 
-        runWithInstantScroll(() =>
-          target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
-        );
-        target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' });
-        return true;
+        if (attempts-- > 0) {
+          rafId = window.requestAnimationFrame(attemptScroll);
+        }
       };
 
-      if (!scrollToHash()) {
-        rafId = window.requestAnimationFrame(scrollToHash);
-      }
+      attemptScroll();
 
       return () => {
         if (rafId !== undefined) {
@@ -81,17 +171,12 @@ const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
       };
     }
 
-    runWithInstantScroll(() =>
-      window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior })
-    );
-    window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior });
+    scrollToPosition(0);
 
     return () => {
       if (rafId !== undefined) {
         window.cancelAnimationFrame(rafId);
       }
     };
-  }, [pathname, search, hash, behavior]);
-};
-
-export default useScrollToTop;
+  }, [pathname, search, hash, behavior, headerSelector]);
+}
