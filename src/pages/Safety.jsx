@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import { setDocumentMeta } from '../utils/seo';
+import useScrollToTop from '../hooks/useScrollToTop';
 import './Safety.css';
 
 const safetyBlocks = [
@@ -29,6 +30,8 @@ const safetyBlocks = [
 ];
 
 const Safety = () => {
+  useScrollToTop();
+
   useEffect(() => {
     setDocumentMeta({
       title: 'Seguridad & Confianza | Estudio Elegante',
