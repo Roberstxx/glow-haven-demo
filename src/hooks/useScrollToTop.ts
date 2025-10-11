@@ -1,7 +1,8 @@
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const isBrowser = typeof window !== 'undefined';
+const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect;
 
 const decodeHash = (hash: string) => {
   try {
@@ -13,7 +14,6 @@ const decodeHash = (hash: string) => {
 
 const tryQuerySelector = (hash: string) => {
   if (!hash) return null;
-
   try {
     return document.querySelector(hash);
   } catch {
@@ -43,25 +43,6 @@ type ScrollBehaviorSetting = ScrollBehavior | 'instant';
 const resolveScrollBehavior = (behavior: ScrollBehaviorSetting): ScrollBehavior =>
   behavior === 'smooth' ? 'smooth' : 'auto';
 
-const setScrollBehavior = (element: HTMLElement | null, value: ScrollBehavior) => {
-  if (!element) {
-    return () => {};
-  }
-
-  const previousValue = element.style.getPropertyValue('scroll-behavior');
-  const previousPriority = element.style.getPropertyPriority('scroll-behavior');
-
-  element.style.setProperty('scroll-behavior', value, 'important');
-
-  return () => {
-    if (previousValue) {
-      element.style.setProperty('scroll-behavior', previousValue, previousPriority);
-    } else {
-      element.style.removeProperty('scroll-behavior');
-    }
-  };
-};
-
 const runWithInstantScroll = (
   behavior: ScrollBehaviorSetting,
   callback: (resolved: ScrollBehavior) => void
@@ -81,55 +62,53 @@ const runWithInstantScroll = (
     return;
   }
 
-  const restoreDocumentBehavior = setScrollBehavior(documentElement, 'auto');
-  const restoreBodyBehavior = setScrollBehavior(body, 'auto');
+  const previousDocumentBehavior = documentElement.style.scrollBehavior;
+  const previousBodyBehavior = body.style.scrollBehavior;
+
+  documentElement.style.scrollBehavior = 'auto';
+  body.style.scrollBehavior = 'auto';
 
   try {
     callback(resolvedBehavior);
   } finally {
-    restoreDocumentBehavior();
-    restoreBodyBehavior();
+    documentElement.style.scrollBehavior = previousDocumentBehavior;
+    body.style.scrollBehavior = previousBodyBehavior;
   }
 };
 
 const useScrollToTop = (behavior: ScrollBehaviorSetting = 'auto') => {
   const { pathname, search, hash } = useLocation();
 
-  useLayoutEffect(() => {
-    if (!isBrowser) {
-      return;
-    }
+  useIsomorphicLayoutEffect(() => {
+    if (!isBrowser) return;
 
     let rafId: number | undefined;
 
     if (hash) {
-      const attemptScrollToHash = () => {
+      const scrollToHash = () => {
         const target = findHashTarget(hash);
-
-        if (!target) {
-          rafId = window.requestAnimationFrame(attemptScrollToHash);
-          return;
-        }
-
-        rafId = undefined;
+        if (!target) return false;
 
         runWithInstantScroll(behavior, (resolvedBehavior) =>
           target.scrollIntoView({ behavior: resolvedBehavior, block: 'start' })
         );
+        return true;
       };
 
-      attemptScrollToHash();
+      if (!scrollToHash()) rafId = window.requestAnimationFrame(scrollToHash);
 
       return () => {
-        if (rafId !== undefined) {
-          window.cancelAnimationFrame(rafId);
-        }
+        if (rafId !== undefined) window.cancelAnimationFrame(rafId);
       };
     }
 
     runWithInstantScroll(behavior, (resolvedBehavior) =>
       window.scrollTo({ top: 0, left: 0, behavior: resolvedBehavior })
     );
+
+    return () => {
+      if (rafId !== undefined) window.cancelAnimationFrame(rafId);
+    };
   }, [pathname, search, hash, behavior]);
 };
 
