@@ -17,6 +17,8 @@ import useScrollToTop from '../hooks/useScrollToTop';
 
 import heroImage from '../assets/images/hero.webp';
 import './Home.css';
+import PolicyPreview from '../components/PolicyPreview';
+
 
 const Home = () => {
   useScrollToTop();
@@ -206,42 +208,12 @@ const Home = () => {
         </section>
 
         {/* 3) POLÍTICAS & SEGURIDAD (preview) */}
-        <section id="politicas-seguridad" className="py-16" style={{ backgroundColor: 'var(--clr-bg)' }}>
+        <section className="py-16" style={{ backgroundColor: 'var(--clr-bg)' }}>
           <div className="container">
-            <div className="section-header">
-              <h2 className="section-title">Políticas & Seguridad</h2>
-              <p className="section-subtitle">La belleza empieza por la salud.</p>
-            </div>
-
-            <div className="grid md:grid-cols-2">
-              <article className="card">
-                <h3 className="mb-4">Protocolos</h3>
-                <ul className="flex flex-col gap-3">
-                  <li>• Uniforme antifluidos, guantes y mascarilla.</li>
-                  <li>• Materiales desechables y toallas limpias por cliente.</li>
-                  <li>• Limpieza quirúrgica, esterilización de instrumental.</li>
-                  <li>• Ventilación y superficies desinfectadas.</li>
-                </ul>
-                <div className="mt-6">
-                  <Link to="/seguridad" className="btn btn-outline btn-sm">Ver protocolos</Link>
-                </div>
-              </article>
-
-              <article className="card">
-                <h3 className="mb-4">Políticas de servicio</h3>
-                <ul className="flex flex-col gap-3">
-                  <li>• Agendamiento con anticipo (30%).</li>
-                  <li>• Tolerancia de 15 min; después se reprograma.</li>
-                  <li>• Sin acompañantes ni mascotas dentro del estudio.</li>
-                  <li>• Llega sin cremas/aceites; avisa si requieres remoción.</li>
-                </ul>
-                <div className="mt-6">
-                  <Link to="/politicas" className="btn btn-primary btn-sm">Ver todas las políticas</Link>
-                </div>
-              </article>
-            </div>
+            <PolicyPreview />
           </div>
         </section>
+
 
         {/* 4) FILOSOFÍA & CONÓCENOS (preview) */}
         <section id="filosofia-conocenos" className="py-16">
